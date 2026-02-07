@@ -1,0 +1,3312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Основы смартфона - Обучение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 10px;
+            --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            --mobile-padding: 15px;
+            --touch-target-min: 44px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+        
+        *:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        
+        html {
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+            background-image: url('IMG_3653.PNG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--mobile-padding);
+            width: 100%;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 10px 0;
+            width: 100%;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .admin-badge {
+            background-color: #ffd700;
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        
+        /* Auth section */
+        .auth-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-weight: 600;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        input {
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            width: 100%;
+            max-width: 250px;
+            min-height: var(--touch-target-min);
+            -webkit-appearance: none;
+        }
+        
+        button, .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-height: var(--touch-target-min);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            max-width: 200px;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        button:hover, .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-success {
+            background-color: #4ade80;
+        }
+        
+        .btn-success:hover {
+            background-color: #22c55e;
+        }
+        
+        .btn-admin {
+            background-color: #ffd700;
+            color: #000;
+        }
+        
+        .btn-admin:hover {
+            background-color: #ffed4e;
+        }
+        
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* Main content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .intro-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .intro-section h1 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            line-height: 1.3;
+        }
+        
+        .intro-section p {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .sections-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        .section-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .section-card h2 i {
+            color: var(--success);
+            font-size: 1.3rem;
+        }
+        
+        .section-card ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-card li {
+            margin-bottom: 10px;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .locked {
+            position: relative;
+            opacity: 0.7;
+        }
+        
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: var(--border-radius);
+            z-index: 10;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .lock-overlay i {
+            font-size: 2.5rem;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .lock-overlay p {
+            font-weight: 600;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .lesson-status {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #f0f9ff;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .lesson-status i.completed {
+            color: #4ade80;
+        }
+        
+        .lesson-status i.not-completed {
+            color: var(--gray);
+        }
+        
+        /* Chat bot */
+        .chatbot-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            height: fit-content;
+            order: -1;
+        }
+        
+        .chatbot-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chatbot-header i {
+            font-size: 1.3rem;
+        }
+        
+        .chatbot-body {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-content {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+        
+        .bot-message .message-content {
+            background-color: var(--light-gray);
+            color: var(--dark);
+        }
+        
+        .user-message .message-content {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .chat-questions {
+            padding: 15px 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .chat-questions h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .question-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .question-btn {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            border: none;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            min-height: var(--touch-target-min);
+            width: 100%;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .question-btn:hover {
+            background-color: #dbeafe;
+        }
+        
+        /* Lesson modal */
+        .lesson-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .lesson-modal.active {
+            display: flex;
+        }
+        
+        .lesson-modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+            margin: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .close-lesson-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            background: white;
+            border-radius: 50%;
+            box-shadow: var(--box-shadow);
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .lesson-content {
+            margin-top: 20px;
+        }
+        
+        .lesson-step {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+            position: relative;
+        }
+        
+        .lesson-step:last-child {
+            border-bottom: none;
+        }
+        
+        .lesson-step h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .lesson-step h3 i {
+            color: var(--success);
+        }
+        
+        .lesson-video {
+            margin: 15px 0;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .lesson-video iframe {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            border: none;
+            border-radius: 8px;
+            max-height: 340px;
+        }
+        
+        .lesson-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+            gap: 15px;
+        }
+        
+        .lesson-actions button {
+            width: 100%;
+        }
+        
+        /* Test modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+            margin: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            background: white;
+            border-radius: 50%;
+            box-shadow: var(--box-shadow);
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .test-question {
+            margin-bottom: 25px;
+        }
+        
+        .test-question h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .test-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: var(--touch-target-min);
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .test-option:hover {
+            background-color: #dbeafe;
+        }
+        
+        .test-option.selected {
+            background-color: #dbeafe;
+            border: 2px solid var(--primary);
+        }
+        
+        .option-letter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .test-result {
+            text-align: center;
+            padding: 25px;
+        }
+        
+        .test-result.hidden {
+            display: none;
+        }
+        
+        .result-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .result-success {
+            color: #4ade80;
+        }
+        
+        .result-fail {
+            color: #f87171;
+        }
+        
+        .test-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .test-actions button {
+            width: 100%;
+        }
+        
+        /* Certificate */
+        .certificate {
+            background-color: #fef9e7;
+            border: 15px solid #f1c40f;
+            padding: 25px;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        
+        .certificate h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        
+        .certificate h2 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .certificate h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+        
+        .certificate p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #34495e;
+            line-height: 1.4;
+        }
+        
+        .user-name {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            font-weight: bold;
+            border-bottom: 2px solid #f1c40f;
+            padding-bottom: 10px;
+            margin: 25px 0;
+            display: inline-block;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        
+        .certificate-date {
+            margin-top: 25px;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        
+        .certificate-actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .certificate-actions button {
+            width: 100%;
+        }
+        
+        /* Progress */
+        .progress-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-radius: var(--border-radius);
+            gap: 15px;
+        }
+        
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .progress-item i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .progress-item.active i {
+            color: #4ade80;
+        }
+        
+        .progress-item.locked i {
+            color: var(--gray);
+        }
+        
+        /* Certificates section */
+        .certificates-section {
+            margin-top: 30px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .certificates-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .certificates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .certificate-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border-left: 4px solid #f1c40f;
+            gap: 15px;
+        }
+        
+        .certificate-item i {
+            font-size: 1.8rem;
+            color: #f1c40f;
+        }
+        
+        /* Admin controls */
+        .admin-controls {
+            background-color: #fff8e1;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px dashed #ffd700;
+        }
+        
+        .admin-controls h3 {
+            color: #ff9800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .admin-controls-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .admin-actions {
+            position: static;
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        .edit-btn, .delete-btn, .save-btn {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            min-height: var(--touch-target-min);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .edit-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .save-btn {
+            background-color: #2196f3;
+            color: white;
+        }
+        
+        .admin-panel {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: var(--box-shadow);
+            border-left: 5px solid #ffd700;
+        }
+        
+        .admin-panel h2 {
+            color: #ff9800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .admin-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-section:last-child {
+            border-bottom: none;
+        }
+        
+        .admin-users-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .admin-user-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 10px;
+        }
+        
+        .admin-user-item:last-child {
+            border-bottom: none;
+        }
+        
+        .admin-user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        
+        .admin-badge-small {
+            background-color: #ffd700;
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        /* Video upload controls */
+        .video-upload-controls {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .video-upload-controls.active {
+            display: block;
+        }
+        
+        .video-upload-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .uploaded-video {
+            width: 100%;
+            height: 200px;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .uploaded-video.active {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive for tablets and larger phones */
+        @media (min-width: 480px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .auth-form {
+                flex-wrap: nowrap;
+                width: auto;
+            }
+            
+            input {
+                width: auto;
+            }
+            
+            button, .btn {
+                width: auto;
+            }
+            
+            .user-info {
+                width: auto;
+                justify-content: flex-end;
+            }
+            
+            .auth-section {
+                width: auto;
+                justify-content: flex-end;
+            }
+            
+            .progress-info {
+                flex-direction: row;
+            }
+            
+            .progress-item {
+                width: auto;
+            }
+        }
+        
+        @media (min-width: 600px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .sections-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .certificate-item {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .admin-user-item {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+        
+        /* Responsive for tablets */
+        @media (min-width: 768px) {
+            .container {
+                padding: 0 25px;
+            }
+            
+            .header-content {
+                flex-wrap: nowrap;
+            }
+            
+            .auth-section {
+                width: auto;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr 350px;
+                gap: 30px;
+                margin: 30px 0;
+            }
+            
+            .chatbot-section {
+                order: 0;
+                position: sticky;
+                top: 100px;
+            }
+            
+            .intro-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .intro-section p {
+                font-size: 1.1rem;
+            }
+            
+            .lesson-actions {
+                flex-direction: row;
+            }
+            
+            .lesson-actions button {
+                width: auto;
+            }
+            
+            .test-actions {
+                flex-direction: row;
+            }
+            
+            .test-actions button {
+                width: auto;
+            }
+            
+            .certificate-actions {
+                flex-direction: row;
+            }
+            
+            .certificate-actions button {
+                width: auto;
+            }
+            
+            .admin-controls-buttons {
+                flex-direction: row;
+            }
+        }
+        
+        /* Large desktops */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 0;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .certificate {
+                border: 20px solid #f1c40f;
+                margin: 0;
+                padding: 40px;
+                box-shadow: none;
+            }
+            
+            .certificate-actions {
+                display: none;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            button:hover, .btn:hover {
+                transform: none;
+            }
+            
+            .section-card:hover {
+                transform: none;
+            }
+            
+            .test-option:hover {
+                background-color: var(--light-gray);
+            }
+            
+            .test-option.selected:hover {
+                background-color: #dbeafe;
+            }
+            
+            .question-btn:hover {
+                background-color: var(--light-gray);
+            }
+            
+            /* Улучшение отзывчивости на мобильных устройствах */
+            button, .btn, .test-option, .question-btn {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary: #0044cc;
+                --secondary: #0033aa;
+                --success: #006600;
+            }
+            
+            .section-card {
+                border: 2px solid #000;
+            }
+            
+            button, .btn {
+                border: 2px solid #000;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            button:hover, .btn:hover {
+                transform: none;
+            }
+            
+            .section-card:hover {
+                transform: none;
+            }
+        }
+        
+        /* Оптимизация для медленных устройств */
+        .lesson-video iframe {
+            pointer-events: auto;
+        }
+        
+        /* Превентивные меры для предотвращения зависаний */
+        .modal-content, .lesson-modal-content {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with auth -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Основы смартфона</span>
+                </div>
+                
+                <div class="auth-section">
+                    <div id="user-info" class="user-info hidden">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="username-display">Пользователь</span>
+                        <span id="admin-badge" class="admin-badge hidden">Админ</span>
+                        <button id="logout-btn">Выйти</button>
+                        <button id="admin-panel-btn" class="btn-admin hidden">Панель администратора</button>
+                    </div>
+                    
+                    <div id="auth-form" class="auth-form">
+                        <input type="text" id="login-name" placeholder="Ваше имя">
+                        <input type="password" id="login-password" placeholder="Пароль">
+                        <button id="login-btn">Войти</button>
+                        <button id="register-btn">Регистрация</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Admin Panel (hidden by default) -->
+        <div id="admin-panel" class="admin-panel hidden">
+            <h2><i class="fas fa-crown"></i> Панель администратора</h2>
+            
+            <div class="admin-section">
+                <h3><i class="fas fa-book"></i> Управление контентом</h3>
+                <div class="admin-controls-buttons">
+                    <button class="btn btn-admin" id="edit-beginner-lessons-btn">Редактировать уроки начального уровня</button>
+                    <button class="btn btn-admin" id="edit-advanced-lessons-btn">Редактировать уроки продвинутого уровня</button>
+                    <button class="btn btn-admin" id="edit-test1-btn">Редактировать тест начального уровня</button>
+                    <button class="btn btn-admin" id="edit-test2-btn">Редактировать тест продвинутого уровня</button>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h3><i class="fas fa-video"></i> Управление видео</h3>
+                <p>Видео можно загружать в режиме редактирования уроков. Загруженные видео сохраняются в браузере.</p>
+            </div>
+        </div>
+        
+        <!-- Progress info -->
+        <div class="progress-info">
+            <div class="progress-item active" id="progress-beginner">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Начальный уровень</span>
+            </div>
+            <div class="progress-item locked" id="progress-advanced">
+                <i class="fas fa-lock"></i>
+                <span>Продвинутый уровень</span>
+            </div>
+            <div class="progress-item locked" id="progress-certificate">
+                <i class="fas fa-award"></i>
+                <span>Получение грамоты</span>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="main-content">
+            <div>
+                <!-- Intro section -->
+                <section class="intro-section">
+                    <h1 id="site-title">Добро пожаловать на сайт "Основы смартфона"!</h1>
+                    <p id="site-description">Наш сайт создан специально для тех, кто только начинает осваивать современные смартфоны. Мы поможем вам понять основные принципы работы с мобильными устройствами, начиная с самых азов. Здесь вы найдете простые и понятные инструкции, которые помогут вам уверенно пользоваться своим смартфоном в повседневной жизни.</p>
+                    <p id="site-description-2">Для начала обучения зарегистрируйтесь на сайте и начните с уроков начального уровня. После прохождения уроков и успешной сдачи теста вы получите грамоту за базовый уровень и доступ к продвинутым материалам. Пройдя продвинутые уроки и тест, вы получите грамоту за повышенный уровень.</p>
+                </section>
+                
+                <!-- Certificates section -->
+                <section class="certificates-section" id="certificates-section">
+                    <h2><i class="fas fa-award"></i> Мои грамоты</h2>
+                    <div class="certificates-list" id="certificates-list">
+                        <div class="certificate-item hidden" id="beginner-certificate-item">
+                            <div>
+                                <h3>Грамота за базовый уровень</h3>
+                                <p>Получена после успешного прохождения теста начального уровня</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-success" id="view-beginner-certificate-main-btn"><i class="fas fa-eye"></i> Просмотреть</button>
+                            </div>
+                        </div>
+                        <div class="certificate-item hidden" id="advanced-certificate-item">
+                            <div>
+                                <h3>Грамота за повышенный уровень</h3>
+                                <p>Получена после успешного прохождения теста продвинутого уровня</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-success" id="view-advanced-certificate-main-btn"><i class="fas fa-eye"></i> Просмотреть</button>
+                            </div>
+                        </div>
+                        <div class="certificate-item" id="no-certificates-item">
+                            <div>
+                                <h3>Грамоты отсутствуют</h3>
+                                <p>Пройдите тесты для получения грамот</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-award"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sections -->
+                <div class="sections-container">
+                    <!-- Beginner section -->
+                    <section class="section-card" id="beginner-section">
+                        <h2><i class="fas fa-graduation-cap"></i> Для начинающих</h2>
+                        <p>Этот раздел предназначен для тех, кто только начинает знакомство со смартфоном.</p>
+                        <ul>
+                            <li>Как включить и выключить смартфон</li>
+                            <li>Регулировка громкости и яркости</li>
+                            <li>Основы навигации по экрану</li>
+                            <li>Установка и удаление приложений</li>
+                            <li>Настройка Wi-Fi и мобильного интернета</li>
+                            <li>Создание и использование контактов</li>
+                            <li>Основы безопасности смартфона</li>
+                        </ul>
+                        
+                        <div class="lesson-status" id="beginner-lesson-status">
+                            <i class="fas fa-play-circle not-completed"></i>
+                            <span>Уроки начального уровня не пройдены</span>
+                        </div>
+                        
+                        <button class="btn" id="beginner-lesson-btn">Изучить уроки начального уровня</button>
+                        
+                        <div class="lesson-status hidden" id="beginner-test-status" style="margin-top: 15px;">
+                            <i class="fas fa-question-circle not-completed"></i>
+                            <span>Тест начального уровня не пройден</span>
+                        </div>
+                        
+                        <button class="btn btn-success hidden" id="beginner-test-btn" style="margin-top: 10px;">Пройти тест начального уровня</button>
+                    </section>
+                    
+                    <!-- Advanced section -->
+                    <section class="section-card locked" id="advanced-section">
+                        <h2><i class="fas fa-chart-line"></i> Для опытных пользователей</h2>
+                        <p>Расширенные возможности смартфона для тех, кто освоил базовые функции.</p>
+                        <ul>
+                            <li>Использование облачных хранилищ</li>
+                            <li>Расширенные настройки безопасности</li>
+                            <li>Работа с мультимедиа: фото, видео, аудио</li>
+                            <li>Использование голосовых помощников</li>
+                            <li>Настройка электронной почты</li>
+                            <li>Платежные системы и мобильный банкинг</li>
+                            <li>Резервное копирование данных</li>
+                        </ul>
+                        
+                        <div class="lesson-status hidden" id="advanced-lesson-status">
+                            <i class="fas fa-play-circle not-completed"></i>
+                            <span>Уроки продвинутого уровня не пройдены</span>
+                        </div>
+                        
+                        <button class="btn hidden" id="advanced-lesson-btn">Изучить уроки продвинутого уровня</button>
+                        
+                        <div class="lesson-status hidden" id="advanced-test-status" style="margin-top: 15px;">
+                            <i class="fas fa-question-circle not-completed"></i>
+                                <span>Тест продвинутого уровня не пройден</span>
+                        </div>
+                        
+                        <button class="btn btn-success hidden" id="advanced-test-btn" style="margin-top: 10px;">Пройти тест продвинутого уровня</button>
+                        
+                        <div class="lock-overlay" id="advanced-lock">
+                            <i class="fas fa-lock"></i>
+                            <p>Этот раздел заблокирован</p>
+                            <p>Для доступа необходимо пройти уроки и тест начального уровня</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Chatbot section -->
+            <section class="chatbot-section">
+                <div class="chatbot-header">
+                    <i class="fas fa-robot"></i>
+                    <h3>Помощник по обучению</h3>
+                </div>
+                
+                <div class="chatbot-body" id="chatbot-messages">
+                    <div class="chat-message bot-message">
+                        <div class="message-content">
+                            Здравствуйте! Я ваш помощник по обучению основам смартфона. Выберите вопрос из меню ниже, и я с радостью на него отвечу!
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-questions">
+                    <h4>Часто задаваемые вопросы:</h4>
+                    <div class="question-buttons">
+                        <button class="question-btn" data-question="about">О чем этот сайт?</button>
+                        <button class="question-btn" data-question="beginner">Что входит в начальный уровень?</button>
+                        <button class="question-btn" data-question="advanced">Как получить доступ к продвинутому уровню?</button>
+                        <button class="question-btn" data-question="test1">Как пройти тест начального уровня?</button>
+                        <button class="question-btn" data-question="test2">Как получить грамоту?</button>
+                        <button class="question-btn" data-question="register">Как зарегистрироваться?</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Beginner Lesson Modal -->
+    <div class="lesson-modal" id="beginner-lesson-modal">
+        <div class="lesson-modal-content">
+            <div class="close-lesson-modal" id="close-beginner-lesson-modal">&times;</div>
+            
+            <h2>Уроки начального уровня</h2>
+            <p>Изучите все уроки ниже, затем закройте это окно и пройдите тест для получения грамоты за базовый уровень.</p>
+            
+            <div class="lesson-content" id="beginner-lesson-content">
+                <!-- Lessons will be loaded here -->
+            </div>
+            
+            <div class="lesson-actions">
+                <button class="btn btn-secondary" id="close-beginner-lesson-btn">Закрыть уроки</button>
+                <div>
+                    <span id="beginner-lesson-progress">Прогресс: 7/7 уроков просмотрено</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Advanced Lesson Modal -->
+    <div class="lesson-modal" id="advanced-lesson-modal">
+        <div class="lesson-modal-content">
+            <div class="close-lesson-modal" id="close-advanced-lesson-modal">&times;</div>
+            
+            <h2>Уроки продвинутого уровня</h2>
+            <p>Изучите все уроки ниже, затем закройте это окно и пройдите тест для получения грамоты за повышенный уровень.</p>
+            
+            <div class="lesson-content" id="advanced-lesson-content">
+                <!-- Lessons will be loaded here -->
+            </div>
+            
+            <div class="lesson-actions">
+                <button class="btn btn-secondary" id="close-advanced-lesson-btn">Закрыть уроки</button>
+                <div>
+                    <span id="advanced-lesson-progress">Прогресс: 7/7 уроков просмотрено</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Lessons Modal -->
+    <div class="modal" id="edit-lessons-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-edit-lessons-modal">&times;</div>
+            
+            <h2 id="edit-lessons-title">Редактирование уроков</h2>
+            <div id="edit-lessons-content">
+                <!-- Editable lessons will be loaded here -->
+            </div>
+            
+            <div class="lesson-actions">
+                <button class="btn btn-success" id="save-lessons-btn">Сохранить изменения</button>
+                <button class="btn btn-secondary" id="cancel-edit-lessons-btn">Отмена</button>
+                <button class="btn btn-admin" id="add-new-lesson-btn">Добавить новый урок</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Test Modal -->
+    <div class="modal" id="edit-test-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-edit-test-modal">&times;</div>
+            
+            <h2 id="edit-test-title">Редактирование теста</h2>
+            <div id="edit-test-content">
+                <!-- Editable test will be loaded here -->
+            </div>
+            
+            <div class="lesson-actions">
+                <button class="btn btn-success" id="save-test-btn">Сохранить изменения</button>
+                <button class="btn btn-secondary" id="cancel-edit-test-btn">Отмена</button>
+                <button class="btn btn-admin" id="add-new-question-btn">Добавить новый вопрос</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test 1 modal (Beginner) -->
+    <div class="modal" id="test1-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-test1-modal">&times;</div>
+            
+            <div id="test1-content">
+                <!-- Test will be loaded here -->
+            </div>
+            
+            <div class="test-result hidden" id="test1-result">
+                <div class="result-icon" id="test1-result-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 id="test1-result-title">Тест пройден успешно!</h2>
+                <p id="test1-result-text">Вы правильно ответили на <span id="test1-correct-answers">5</span> из 5 вопросов.</p>
+                <p id="test1-result-message">Поздравляем! Вы успешно освоили базовый уровень!</p>
+                <div class="test-actions">
+                    <button class="btn" id="view-beginner-certificate-btn">Получить грамоту за базовый уровень</button>
+                    <button class="btn btn-secondary" id="retry-test1-btn">Пройти тест снова</button>
+                    <button class="btn btn-secondary" id="close-test1-result-btn">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test 2 modal (Advanced) -->
+    <div class="modal" id="test2-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-test2-modal">&times;</div>
+            
+            <div id="test2-content">
+                <!-- Test will be loaded here -->
+            </div>
+            
+            <div class="test-result hidden" id="test2-result">
+                <div class="result-icon" id="test2-result-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 id="test2-result-title">Тест пройден успешно!</h2>
+                <p id="test2-result-text">Вы правильно ответили на <span id="test2-correct-answers">5</span> из 5 вопросов.</p>
+                <p id="test2-result-message">Поздравляем! Вы успешно освоили повышенный уровень!</p>
+                <div class="test-actions">
+                    <button class="btn" id="view-advanced-certificate-btn">Получить грамоту за повышенный уровень</button>
+                    <button class="btn btn-secondary" id="retry-test2-btn">Пройти тест снова</button>
+                    <button class="btn btn-secondary" id="close-test2-result-btn">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Certificate modal for Beginner level -->
+    <div class="modal" id="beginner-certificate-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-beginner-certificate-modal">&times;</div>
+            
+            <div class="certificate" id="beginner-certificate">
+                <h1>ГРАМОТА</h1>
+                <h2>За успешное освоение базового курса</h2>
+                <h3>"Основы смартфона для начинающих"</h3>
+                <p>Настоящим удостоверяется, что</p>
+                <div class="user-name" id="beginner-certificate-username">Иван Иванов</div>
+                <p>успешно прошел(ла) базовый курс обучения<br>и показал(а) отличные знания в области использования<br>мобильных устройств на начальном уровне</p>
+                <p>Дата: <span id="beginner-certificate-date">01 января 2023</span></p>
+                <div class="certificate-actions">
+                    <button class="btn" id="print-beginner-certificate-btn"><i class="fas fa-print"></i> Распечатать грамоту</button>
+                    <button class="btn btn-secondary" id="close-beginner-certificate-btn">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Certificate modal for Advanced level -->
+    <div class="modal" id="advanced-certificate-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-advanced-certificate-modal">&times;</div>
+            
+            <div class="certificate" id="advanced-certificate">
+                <h1>ГРАМОТА</h1>
+                <h2>За успешное освоение продвинутого курса</h2>
+                <h3>"Основы смартфона для опытных пользователей"</h3>
+                <p>Настоящим удостоверяется, что</p>
+                <div class="user-name" id="advanced-certificate-username">Иван Иванов</div>
+                <p>успешно прошел(ла) продвинутый курс обучения<br>и показал(а) отличные знания в области использования<br>современных мобильных устройств на повышенном уровне</p>
+                <p>Дата: <span id="advanced-certificate-date">01 января 2023</span></p>
+                <div class="certificate-actions">
+                    <button class="btn" id="print-advanced-certificate-btn"><i class="fas fa-print"></i> Распечатать грамоту</button>
+                    <button class="btn btn-secondary" id="close-advanced-certificate-btn">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2026 "Основы смартфона" - Образовательный проект для всех возрастов</p>
+            <p>Сайт создан для помощи в освоении современных мобильных технологий</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Touch device detection
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+        
+        // App state
+        const state = {
+            currentUser: null,
+            isAuthenticated: false,
+            isAdmin: false,
+            beginnerLessonCompleted: false,
+            beginnerTestPassed: false,
+            advancedLessonCompleted: false,
+            advancedTestPassed: false,
+            test1Answers: {},
+            test2Answers: {},
+            users: [],
+            lessons: {
+                beginner: [],
+                advanced: []
+            },
+            tests: {
+                test1: [],
+                test2: []
+            },
+            uploadedVideos: {},
+            isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        };
+        
+        // DOM Elements
+        const authForm = document.getElementById('auth-form');
+        const userInfo = document.getElementById('user-info');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const adminPanelBtn = document.getElementById('admin-panel-btn');
+        const adminPanel = document.getElementById('admin-panel');
+        const loginNameInput = document.getElementById('login-name');
+        const loginPasswordInput = document.getElementById('login-password');
+        const usernameDisplay = document.getElementById('username-display');
+        const adminBadge = document.getElementById('admin-badge');
+        
+        // Admin panel elements
+        const editBeginnerLessonsBtn = document.getElementById('edit-beginner-lessons-btn');
+        const editAdvancedLessonsBtn = document.getElementById('edit-advanced-lessons-btn');
+        const editTest1Btn = document.getElementById('edit-test1-btn');
+        const editTest2Btn = document.getElementById('edit-test2-btn');
+        
+        // Edit modals
+        const editLessonsModal = document.getElementById('edit-lessons-modal');
+        const closeEditLessonsModal = document.getElementById('close-edit-lessons-modal');
+        const editLessonsContent = document.getElementById('edit-lessons-content');
+        const editLessonsTitle = document.getElementById('edit-lessons-title');
+        const saveLessonsBtn = document.getElementById('save-lessons-btn');
+        const cancelEditLessonsBtn = document.getElementById('cancel-edit-lessons-btn');
+        const addNewLessonBtn = document.getElementById('add-new-lesson-btn');
+        
+        const editTestModal = document.getElementById('edit-test-modal');
+        const closeEditTestModal = document.getElementById('close-edit-test-modal');
+        const editTestContent = document.getElementById('edit-test-content');
+        const editTestTitle = document.getElementById('edit-test-title');
+        const saveTestBtn = document.getElementById('save-test-btn');
+        const cancelEditTestBtn = document.getElementById('cancel-edit-test-btn');
+        const addNewQuestionBtn = document.getElementById('add-new-question-btn');
+        
+        // Certificate elements
+        const beginnerCertificateUsernameElement = document.getElementById('beginner-certificate-username');
+        const advancedCertificateUsernameElement = document.getElementById('advanced-certificate-username');
+        
+        // Performance optimization flags
+        let isModalOpen = false;
+        let modalVideoIframes = [];
+        
+        // Initialize the app
+        function initApp() {
+            console.log("Инициализация приложения. Мобильное устройство:", state.isMobile);
+            
+            // Загрузка всех данных
+            loadAllData();
+            
+            // Проверка аутентификации
+            checkAuthentication();
+            
+            // Установка обработчиков событий
+            setupEventListeners();
+            
+            // Установка даты в сертификатах
+            updateCertificateDate();
+            
+            // Проверка и обновление данных администратора
+            ensureAdminUser();
+            
+            console.log("Приложение инициализировано");
+        }
+        
+        // Загрузка всех данных из localStorage
+        function loadAllData() {
+            try {
+                // Пользователи
+                const savedUsers = localStorage.getItem('smartphoneUsers');
+                state.users = savedUsers ? JSON.parse(savedUsers) : [];
+                
+                // Уроки
+                const savedLessons = localStorage.getItem('smartphoneLessons');
+                if (savedLessons) {
+                    const lessons = JSON.parse(savedLessons);
+                    state.lessons.beginner = lessons.beginner || [];
+                    state.lessons.advanced = lessons.advanced || [];
+                }
+                
+                // Тесты
+                const savedTests = localStorage.getItem('smartphoneTests');
+                if (savedTests) {
+                    const tests = JSON.parse(savedTests);
+                    state.tests.test1 = tests.test1 || [];
+                    state.tests.test2 = tests.test2 || [];
+                }
+                
+                // Видео
+                const savedVideos = localStorage.getItem('smartphoneVideos');
+                if (savedVideos) {
+                    state.uploadedVideos = JSON.parse(savedVideos);
+                }
+                
+                // Загрузка дефолтных данных если пусто
+                if (state.lessons.beginner.length === 0) {
+                    loadDefaultLessons();
+                }
+                if (state.tests.test1.length === 0) {
+                    loadDefaultTests();
+                }
+                
+            } catch (error) {
+                console.error("Ошибка загрузки данных:", error);
+                // Сброс данных при ошибке парсинга
+                state.users = [];
+                state.lessons = { beginner: [], advanced: [] };
+                state.tests = { test1: [], test2: [] };
+                state.uploadedVideos = {};
+                loadDefaultLessons();
+                loadDefaultTests();
+            }
+        }
+        
+        // Проверка аутентификации
+        function checkAuthentication() {
+            const savedUserId = localStorage.getItem('currentUserId');
+            if (savedUserId) {
+                const user = state.users.find(u => u.id === savedUserId);
+                if (user) {
+                    loginUser(user);
+                } else {
+                    localStorage.removeItem('currentUserId');
+                }
+            }
+        }
+        
+        // Вход пользователя
+        function loginUser(user) {
+            state.currentUser = user;
+            state.isAuthenticated = true;
+            state.isAdmin = Boolean(user.isAdmin);
+            state.beginnerLessonCompleted = Boolean(user.beginnerLessonCompleted);
+            state.beginnerTestPassed = Boolean(user.beginnerTestPassed);
+            state.advancedLessonCompleted = Boolean(user.advancedLessonCompleted);
+            state.advancedTestPassed = Boolean(user.advancedTestPassed);
+            
+            localStorage.setItem('currentUserId', user.id);
+            
+            updateUI();
+            updateCertificateNames();
+            addBotMessage(`С возвращением, ${user.name}! Рад снова вас видеть.`);
+        }
+        
+        // Проверка и создание администратора
+        function ensureAdminUser() {
+            const adminUser = state.users.find(u => u.name.toLowerCase() === 'айлин');
+            if (!adminUser) {
+                const newAdminUser = {
+                    id: 'admin_user_' + Date.now(),
+                    name: 'Айлин',
+                    password: '5555',
+                    registered: new Date().toISOString(),
+                    isAdmin: true,
+                    isSuperAdmin: true,
+                    beginnerLessonCompleted: true,
+                    beginnerTestPassed: true,
+                    advancedLessonCompleted: true,
+                    advancedTestPassed: true
+                };
+                
+                state.users.push(newAdminUser);
+                saveUsersToStorage();
+                console.log('Создан новый администратор: Айлин');
+            }
+        }
+        
+        // Загрузка дефолтных уроков
+        function loadDefaultLessons() {
+            state.lessons.beginner = [
+                {
+                    id: 'beginner-1',
+                    title: 'Как включить и выключить смартфон',
+                    icon: 'fa-power-off',
+                    content: 'Большинство смартфонов включается и выключается длительным нажатием на боковую кнопку. Обычно нужно удерживать ее 2-3 секунды.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'beginner-2',
+                    title: 'Регулировка громкости и яркости',
+                    icon: 'fa-volume-up',
+                    content: 'На боковой панели смартфона обычно есть две кнопки для регулировки громкости. Яркость регулируется через панель быстрых настроек или в настройках экрана.',
+                    videoUrl: 'https://rutube.ru/video/c515f1b6cad7ac22fdbaf9afc5d57b6b/',
+                    videoType: 'rutube',
+                    hasCustomVideo: true,
+                    videoEmbedCode: '<iframe width="100%" height="315" src="https://rutube.ru/play/embed/c515f1b6cad7ac22fdbaf9afc5d57b6b/" style="border: none;" allow="clipboard-write; autoplay" allowfullscreen></iframe>'
+                },
+                {
+                    id: 'beginner-3',
+                    title: 'Основы навигации по экрану',
+                    icon: 'fa-home',
+                    content: 'Домашний экран - это основной экран с иконками приложений. Чтобы открыть приложение, коснитесь его иконки. Чтобы вернуться на домашний экран, нажмите центральную кнопку внизу экрана.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'beginner-4',
+                    title: 'Установка и удаление приложений',
+                    icon: 'fa-download',
+                    content: 'Приложения устанавливаются через магазин приложений (Google Play для Android или App Store для iPhone). Чтобы удалить приложение, задержите палец на его иконке и выберите "Удалить".',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'beginner-5',
+                    title: 'Настройка Wi-Fi и мобильного интернета',
+                    icon: 'fa-wifi',
+                    content: 'Wi-Fi настраивается в разделе "Настройки" -> "Wi-Fi". Мобильный интернет включается в разделе "Настройки" -> "Сеть и интернет" -> "Мобильная сеть".',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'beginner-6',
+                    title: 'Создание и использование контактов',
+                    icon: 'fa-address-book',
+                    content: 'Контакты добавляются через приложение "Контакты". Нажмите кнопку "+" и введите данные человека. Для звонка достаточно коснуться контакта в списке.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'beginner-7',
+                    title: 'Основы безопасности смартфона',
+                    icon: 'fa-shield-alt',
+                    content: 'Установите блокировка экрана (PIN, графический ключ или отпечаток пальца). Не скачивайте приложения из неизвестных источников. Регулярно обновляйте систему и приложения.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                }
+            ];
+            
+            state.lessons.advanced = [
+                {
+                    id: 'advanced-1',
+                    title: 'Использование облачных хранилищ',
+                    icon: 'fa-cloud',
+                    content: 'Облачные хранилища (Google Drive, iCloud) позволяют хранить файлы в интернете. Фотографии, документы и другие файлы будут доступны с любого устройства.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'advanced-2',
+                    title: 'Расширенные настройки безопасности',
+                    icon: 'fa-lock',
+                    content: 'Двухфакторная аутентификация добавляет дополнительный уровень защиты. Шифрование данных защищает информацию при потере устройства.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'advanced-3',
+                    title: 'Работа с мультимедиа: фото, видео, аудио',
+                    icon: 'fa-photo-video',
+                    content: 'Научитесь делать качественные фото и видео, редактировать их, создавать альбомы и делиться ими в социальных сетях и мессенджерах.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'advanced-4',
+                    title: 'Использование голосовых помощников',
+                    icon: 'fa-microphone',
+                    content: 'Голосовые помощники (Google Assistant, Siri) могут выполнять команды, отвечать на вопросы, устанавливать напоминания и управлять умным домом.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'advanced-5',
+                    title: 'Настройка электронной почты',
+                    icon: 'fa-envelope',
+                    content: 'Настройте почтовый клиент для работы с электронной почтой. Научитесь отправлять и получать письма, прикреплять файлы и организовывать почту.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'advanced-6',
+                    title: 'Платежные системы и мобильный банкинг',
+                    icon: 'fa-credit-card',
+                    content: 'Настройте бесконтактную оплату (Google Pay, Apple Pay). Используйте мобильные приложения банков для переводов, оплаты счетов и контроля финансов.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                },
+                {
+                    id: 'advanced-7',
+                    title: 'Резервное копирование данных',
+                    icon: 'fa-save',
+                    content: 'Настройте автоматическое резервное копирование контактов, фото, сообщений и других данных. Это защитит информацию при потере или поломке устройства.',
+                    videoUrl: '',
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoEmbedCode: ''
+                }
+            ];
+            
+            saveLessonsToStorage();
+        }
+        
+        // Загрузка дефолтных тестов
+        function loadDefaultTests() {
+            state.tests.test1 = [
+                {
+                    id: 1,
+                    question: 'Как обычно включают смартфон?',
+                    options: [
+                        { id: 'A', text: 'Длительным нажатием на боковую кнопку', correct: true },
+                        { id: 'B', text: 'Нажатием на экран', correct: false },
+                        { id: 'C', text: 'Голосовой командой', correct: false }
+                    ]
+                },
+                {
+                    id: 2,
+                    question: 'Как увеличить громкость на смартфоне?',
+                    options: [
+                        { id: 'A', text: 'Нажать кнопку увеличения громкости на боковой панели', correct: true },
+                        { id: 'B', text: 'Потрясти смартфон', correct: false },
+                        { id: 'C', text: 'Коснуться экрана дважды', correct: false }
+                    ]
+                },
+                {
+                    id: 3,
+                    question: 'Что такое домашний экран смартфона?',
+                    options: [
+                        { id: 'A', text: 'Основной экран с иконками приложений', correct: true },
+                        { id: 'B', text: 'Экран блокировки', correct: false },
+                        { id: 'C', text: 'Экран настроек', correct: false }
+                    ]
+                },
+                {
+                    id: 4,
+                    question: 'Как установить новое приложение на смартфон?',
+                    options: [
+                        { id: 'A', text: 'Через магазин приложений (Google Play или App Store)', correct: true },
+                        { id: 'B', text: 'Через настройки телефона', correct: false },
+                        { id: 'C', text: 'Через камеру смартфона', correct: false }
+                    ]
+                },
+                {
+                    id: 5,
+                    question: 'Как подключиться к Wi-Fi сети?',
+                    options: [
+                        { id: 'A', text: 'Через настройки в разделе "Wi-Fi"', correct: true },
+                        { id: 'B', text: 'Автоматически при включении смартфона', correct: false },
+                        { id: 'C', text: 'Через приложение "Камера"', correct: false }
+                    ]
+                }
+            ];
+            
+            state.tests.test2 = [
+                {
+                    id: 1,
+                    question: 'Что такое облачное хранилище?',
+                    options: [
+                        { id: 'A', text: 'Удаленный сервер для хранения данных с доступом через интернет', correct: true },
+                        { id: 'B', text: 'Встроенная память смартфона', correct: false },
+                        { id: 'C', text: 'Карта памяти microSD', correct: false }
+                    ]
+                },
+                {
+                    id: 2,
+                    question: 'Какой способ оплаты наиболее безопасен при использовании смартфона?',
+                    options: [
+                        { id: 'A', text: 'Бесконтактная оплата (NFC) через защищенные приложения', correct: true },
+                        { id: 'B', text: 'Ввод данных карты на любом сайте', correct: false },
+                        { id: 'C', text: 'Отправка данных карта по электронной почте', correct: false }
+                    ]
+                },
+                {
+                    id: 3,
+                    question: 'Что такое двухфакторная аутентификация?',
+                    options: [
+                        { id: 'A', text: 'Дополнительный способ подтверждения личности помимо пароля', correct: true },
+                        { id: 'B', text: 'Использование двух разных паролей', correct: false },
+                        { id: 'C', text: 'Вход в два аккаунта одновременно', correct: false }
+                    ]
+                },
+                {
+                    id: 4,
+                    question: 'Для чего используется резервное копирование данных?',
+                    options: [
+                        { id: 'A', text: 'Для сохранения копии данных на случай потери или поломки устройства', correct: true },
+                        { id: 'B', text: 'Для увеличения скорости работы смартфона', correct: false },
+                        { id: 'C', text: 'Для освобождения места в памяти телефона', correct: false }
+                    ]
+                },
+                {
+                    id: 5,
+                    question: 'Какой из голосовых помощников используется на Android устройствах?',
+                    options: [
+                        { id: 'A', text: 'Google Assistant', correct: true },
+                        { id: 'B', text: 'Siri', correct: false },
+                        { id: 'C', text: 'Alexa', correct: false }
+                    ]
+                }
+            ];
+            
+            saveTestsToStorage();
+        }
+        
+        // Storage functions
+        function saveUsersToStorage() {
+            if (state.currentUser && state.isAuthenticated) {
+                const userIndex = state.users.findIndex(user => user.id === state.currentUser.id);
+                if (userIndex !== -1) {
+                    state.users[userIndex] = { 
+                        ...state.users[userIndex],
+                        beginnerLessonCompleted: state.beginnerLessonCompleted,
+                        beginnerTestPassed: state.beginnerTestPassed,
+                        advancedLessonCompleted: state.advancedLessonCompleted,
+                        advancedTestPassed: state.advancedTestPassed,
+                        isAdmin: state.isAdmin
+                    };
+                    state.currentUser = state.users[userIndex];
+                }
+            }
+            localStorage.setItem('smartphoneUsers', JSON.stringify(state.users));
+        }
+        
+        function saveLessonsToStorage() {
+            localStorage.setItem('smartphoneLessons', JSON.stringify(state.lessons));
+        }
+        
+        function saveTestsToStorage() {
+            localStorage.setItem('smartphoneTests', JSON.stringify(state.tests));
+        }
+        
+        function saveUploadedVideosToStorage() {
+            localStorage.setItem('smartphoneVideos', JSON.stringify(state.uploadedVideos));
+        }
+        
+        // Обновление интерфейса
+        function updateUI() {
+            if (state.isAuthenticated) {
+                authForm.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                usernameDisplay.textContent = state.currentUser.name;
+                
+                // Админские элементы
+                if (state.isAdmin) {
+                    adminBadge.classList.remove('hidden');
+                    adminPanelBtn.classList.remove('hidden');
+                } else {
+                    adminBadge.classList.add('hidden');
+                    adminPanelBtn.classList.add('hidden');
+                    adminPanel.classList.add('hidden');
+                }
+                
+                // Раздел с сертификатами
+                updateCertificatesSection();
+                
+                // Начальный уровень
+                updateBeginnerSection();
+                
+                // Продвинутый уровень
+                if (state.beginnerTestPassed) {
+                    document.getElementById('advanced-section').classList.remove('locked');
+                    document.getElementById('advanced-lock').classList.add('hidden');
+                    document.getElementById('advanced-lesson-btn').classList.remove('hidden');
+                    document.getElementById('advanced-lesson-status').classList.remove('hidden');
+                    document.getElementById('advanced-test-status').classList.remove('hidden');
+                    document.getElementById('progress-advanced').classList.remove('locked');
+                    document.getElementById('progress-advanced').classList.add('active');
+                    
+                    updateAdvancedSection();
+                } else {
+                    document.getElementById('advanced-section').classList.add('locked');
+                    document.getElementById('advanced-lock').classList.remove('hidden');
+                    document.getElementById('advanced-lesson-btn').classList.add('hidden');
+                    document.getElementById('advanced-lesson-status').classList.add('hidden');
+                    document.getElementById('advanced-test-status').classList.add('hidden');
+                    document.getElementById('progress-advanced').classList.add('locked');
+                    document.getElementById('progress-advanced').classList.remove('active');
+                }
+                
+                // Прогресс сертификатов
+                if (state.advancedTestPassed) {
+                    document.getElementById('progress-certificate').classList.remove('locked');
+                    document.getElementById('progress-certificate').classList.add('active');
+                } else {
+                    document.getElementById('progress-certificate').classList.add('locked');
+                    document.getElementById('progress-certificate').classList.remove('active');
+                }
+                
+                // Показываем раздел с сертификатами
+                document.getElementById('certificates-section').classList.remove('hidden');
+                
+            } else {
+                authForm.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+                document.getElementById('certificates-section').classList.add('hidden');
+                adminPanel.classList.add('hidden');
+                
+                // Блокируем разделы
+                document.getElementById('beginner-test-btn').classList.add('hidden');
+                document.getElementById('beginner-test-status').classList.add('hidden');
+                document.getElementById('advanced-section').classList.add('locked');
+                document.getElementById('advanced-lock').classList.remove('hidden');
+                document.getElementById('advanced-lesson-btn').classList.add('hidden');
+                document.getElementById('advanced-lesson-status').classList.add('hidden');
+                document.getElementById('advanced-test-btn').classList.add('hidden');
+                document.getElementById('advanced-test-status').classList.add('hidden');
+                
+                document.getElementById('progress-beginner').classList.remove('active');
+                document.getElementById('progress-advanced').classList.add('locked');
+                document.getElementById('progress-certificate').classList.add('locked');
+            }
+        }
+        
+        function updateCertificatesSection() {
+            if (state.beginnerTestPassed || state.advancedTestPassed) {
+                document.getElementById('no-certificates-item').classList.add('hidden');
+                
+                if (state.beginnerTestPassed) {
+                    document.getElementById('beginner-certificate-item').classList.remove('hidden');
+                } else {
+                    document.getElementById('beginner-certificate-item').classList.add('hidden');
+                }
+                
+                if (state.advancedTestPassed) {
+                    document.getElementById('advanced-certificate-item').classList.remove('hidden');
+                } else {
+                    document.getElementById('advanced-certificate-item').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('no-certificates-item').classList.remove('hidden');
+                document.getElementById('beginner-certificate-item').classList.add('hidden');
+                document.getElementById('advanced-certificate-item').classList.add('hidden');
+            }
+        }
+        
+        function updateBeginnerSection() {
+            if (state.beginnerLessonCompleted) {
+                document.getElementById('beginner-lesson-status').innerHTML = '<i class="fas fa-check-circle completed"></i><span>Уроки начального уровня пройдены</span>';
+                document.getElementById('beginner-test-btn').classList.remove('hidden');
+                document.getElementById('beginner-test-status').classList.remove('hidden');
+            } else {
+                document.getElementById('beginner-lesson-status').innerHTML = '<i class="fas fa-play-circle not-completed"></i><span>Уроки начального уровня не пройдены</span>';
+                document.getElementById('beginner-test-btn').classList.add('hidden');
+                document.getElementById('beginner-test-status').classList.add('hidden');
+            }
+            
+            if (state.beginnerTestPassed) {
+                document.getElementById('beginner-test-status').innerHTML = '<i class="fas fa-check-circle completed"></i><span>Тест начального уровня пройден</span>';
+                document.getElementById('beginner-test-btn').classList.add('hidden');
+                document.getElementById('progress-beginner').classList.add('active');
+            } else {
+                document.getElementById('beginner-test-status').innerHTML = '<i class="fas fa-question-circle not-completed"></i><span>Тест начального уровня не пройден</span>';
+                document.getElementById('beginner-test-btn').classList.remove('hidden');
+                document.getElementById('progress-beginner').classList.remove('active');
+            }
+        }
+        
+        function updateAdvancedSection() {
+            if (state.advancedLessonCompleted) {
+                document.getElementById('advanced-lesson-status').innerHTML = '<i class="fas fa-check-circle completed"></i><span>Уроки продвинутого уровня пройдены</span>';
+                document.getElementById('advanced-test-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('advanced-lesson-status').innerHTML = '<i class="fas fa-play-circle not-completed"></i><span>Уроки продвинутого уровня не пройдены</span>';
+                document.getElementById('advanced-test-btn').classList.add('hidden');
+            }
+            
+            if (state.advancedTestPassed) {
+                document.getElementById('advanced-test-status').innerHTML = '<i class="fas fa-check-circle completed"></i><span>Тест продвинутого уровня пройден</span>';
+                document.getElementById('advanced-test-btn').classList.add('hidden');
+                document.getElementById('progress-certificate').classList.add('active');
+            } else {
+                document.getElementById('advanced-test-status').innerHTML = '<i class="fas fa-question-circle not-completed"></i><span>Тест продвинутого уровня не пройден</span>';
+                document.getElementById('advanced-test-btn').classList.remove('hidden');
+                document.getElementById('progress-certificate').classList.remove('active');
+            }
+        }
+        
+        // Функции аутентификации
+        function login() {
+            const name = loginNameInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+            
+            if (!name || !password) {
+                alert('Пожалуйста, введите имя и пароль');
+                return;
+            }
+            
+            const user = state.users.find(u => u.name.toLowerCase() === name.toLowerCase());
+            
+            if (user && user.password === password) {
+                loginUser(user);
+                loginNameInput.value = '';
+                loginPasswordInput.value = '';
+            } else {
+                alert('Неверное имя пользователя или пароль');
+            }
+        }
+        
+        function register() {
+            const name = loginNameInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+            
+            if (!name || !password) {
+                alert('Пожалуйста, введите имя и пароль');
+                return;
+            }
+            
+            if (password.length < 4) {
+                alert('Пароль должен содержать минимум 4 символа');
+                return;
+            }
+            
+            if (state.users.find(u => u.name.toLowerCase() === name.toLowerCase())) {
+                alert('Пользователь с таким именем уже существует');
+                return;
+            }
+            
+            const newUser = {
+                id: 'user_' + Date.now(),
+                name,
+                password,
+                registered: new Date().toISOString(),
+                isAdmin: false,
+                beginnerLessonCompleted: false,
+                beginnerTestPassed: false,
+                advancedLessonCompleted: false,
+                advancedTestPassed: false
+            };
+            
+            state.users.push(newUser);
+            saveUsersToStorage();
+            
+            loginUser(newUser);
+            loginNameInput.value = '';
+            loginPasswordInput.value = '';
+        }
+        
+        function logout() {
+            state.currentUser = null;
+            state.isAuthenticated = false;
+            state.isAdmin = false;
+            state.beginnerLessonCompleted = false;
+            state.beginnerTestPassed = false;
+            state.advancedLessonCompleted = false;
+            state.advancedTestPassed = false;
+            
+            localStorage.removeItem('currentUserId');
+            adminPanel.classList.add('hidden');
+            
+            updateUI();
+            addBotMessage('Вы вышли из системы. Для продолжения обучения зарегистрируйтесь или войдите снова.');
+        }
+        
+        // Админские функции
+        function toggleAdminPanel() {
+            if (adminPanel.classList.contains('hidden')) {
+                adminPanel.classList.remove('hidden');
+                adminPanel.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                adminPanel.classList.add('hidden');
+            }
+        }
+        
+        // Функции уроков (оптимизированные для мобильных)
+        function openBeginnerLessonModal() {
+            if (!state.isAuthenticated) {
+                alert('Для просмотра уроков необходимо войти в систему');
+                return;
+            }
+            
+            openLessonModal('beginner');
+        }
+        
+        function openAdvancedLessonModal() {
+            if (!state.isAuthenticated) {
+                alert('Для просмотра уроков необходимо войти в систему');
+                return;
+            }
+            
+            if (!state.beginnerTestPassed) {
+                alert('Для доступа к этим урокам необходимо пройти тест начального уровня');
+                return;
+            }
+            
+            openLessonModal('advanced');
+        }
+        
+        function openLessonModal(level) {
+            const modal = document.getElementById(`${level}-lesson-modal`);
+            const content = document.getElementById(`${level}-lesson-content`);
+            
+            content.innerHTML = '';
+            
+            // Оптимизация: загружаем уроки постепенно для предотвращения зависаний
+            loadLessonsWithDelay(level, content);
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            isModalOpen = true;
+            
+            updateLessonProgress(level);
+        }
+        
+        function loadLessonsWithDelay(level, container) {
+            const lessons = state.lessons[level];
+            let index = 0;
+            
+            function loadNextLesson() {
+                if (index >= lessons.length) {
+                    // Все уроки загружены
+                    if (state.isMobile) {
+                        // На мобильных устройствах оптимизируем iframe видео
+                        optimizeMobileVideos(container);
+                    }
+                    return;
+                }
+                
+                const lesson = lessons[index];
+                const lessonStep = createLessonStep(lesson, index + 1, level);
+                container.appendChild(lessonStep);
+                
+                index++;
+                
+                // Используем requestAnimationFrame для плавной загрузки
+                if (index < lessons.length) {
+                    requestAnimationFrame(() => {
+                        setTimeout(loadNextLesson, 50); // Маленькая задержка для предотвращения зависаний
+                    });
+                } else {
+                    loadNextLesson();
+                }
+            }
+            
+            loadNextLesson();
+        }
+        
+        function createLessonStep(lesson, number, level) {
+            const lessonStep = document.createElement('div');
+            lessonStep.className = 'lesson-step';
+            lessonStep.id = lesson.id;
+            
+            const title = document.createElement('h3');
+            title.innerHTML = `<i class="fas ${lesson.icon}"></i> ${number}. ${lesson.title}`;
+            
+            lessonStep.appendChild(title);
+            
+            // Видео
+            if (lesson.hasCustomVideo && lesson.videoEmbedCode) {
+                const videoContainer = document.createElement('div');
+                videoContainer.className = 'lesson-video';
+                
+                // Оптимизация для мобильных устройств
+                let videoHtml = lesson.videoEmbedCode;
+                if (state.isMobile) {
+                    // Упрощаем iframe для мобильных устройств
+                    videoHtml = videoHtml.replace('width="720"', 'width="100%"')
+                                        .replace('height="405"', 'height="auto"');
+                }
+                videoContainer.innerHTML = videoHtml;
+                lessonStep.appendChild(videoContainer);
+            }
+            
+            const content = document.createElement('p');
+            content.textContent = lesson.content;
+            lessonStep.appendChild(content);
+            
+            // Админские кнопки
+            if (state.isAdmin) {
+                const adminActions = document.createElement('div');
+                adminActions.className = 'admin-actions';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Удалить урок';
+                deleteBtn.title = 'Удалить урок';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteLesson(lesson.id, level);
+                });
+                
+                adminActions.appendChild(deleteBtn);
+                lessonStep.appendChild(adminActions);
+            }
+            
+            return lessonStep;
+        }
+        
+        function optimizeMobileVideos(container) {
+            const iframes = container.querySelectorAll('iframe');
+            modalVideoIframes = Array.from(iframes);
+            
+            modalVideoIframes.forEach(iframe => {
+                // Добавляем атрибуты для лучшей производительности на мобильных
+                iframe.setAttribute('loading', 'lazy');
+                iframe.setAttribute('importance', 'low');
+                
+                // Ограничиваем автоматическое воспроизведение на мобильных
+                if (state.isMobile) {
+                    iframe.removeAttribute('autoplay');
+                    iframe.removeAttribute('allow', 'autoplay');
+                }
+            });
+        }
+        
+        function closeLessonModal(level) {
+            const modal = document.getElementById(`${level}-lesson-modal`);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            isModalOpen = false;
+            
+            // Очищаем видео для освобождения памяти
+            modalVideoIframes.forEach(iframe => {
+                if (iframe.parentNode) {
+                    iframe.src = '';
+                }
+            });
+            modalVideoIframes = [];
+            
+            // Обновляем прогресс
+            if (level === 'beginner') {
+                state.beginnerLessonCompleted = true;
+                addBotMessage('Отлично! Вы ознакомились с уроками начального уровня. Теперь можете пройти тест для получения грамоты за базовый уровень.');
+            } else {
+                state.advancedLessonCompleted = true;
+                addBotMessage('Отлично! Вы ознакомились с уроками продвинутого уровня. Теперь можете пройти тест для получения грамоты за повышенный уровень.');
+            }
+            
+            saveUserProgress();
+            updateUI();
+        }
+        
+        function updateLessonProgress(level) {
+            const count = state.lessons[level].length;
+            document.getElementById(`${level}-lesson-progress`).textContent = `Прогресс: ${count}/${count} уроков просмотрено`;
+        }
+        
+        function saveUserProgress() {
+            if (state.currentUser && state.isAuthenticated) {
+                const userIndex = state.users.findIndex(user => user.id === state.currentUser.id);
+                if (userIndex !== -1) {
+                    state.users[userIndex].beginnerLessonCompleted = state.beginnerLessonCompleted;
+                    state.users[userIndex].beginnerTestPassed = state.beginnerTestPassed;
+                    state.users[userIndex].advancedLessonCompleted = state.advancedLessonCompleted;
+                    state.users[userIndex].advancedTestPassed = state.advancedTestPassed;
+                    
+                    state.currentUser.beginnerLessonCompleted = state.beginnerLessonCompleted;
+                    state.currentUser.beginnerTestPassed = state.beginnerTestPassed;
+                    state.currentUser.advancedLessonCompleted = state.advancedLessonCompleted;
+                    state.currentUser.advancedTestPassed = state.advancedTestPassed;
+                    
+                    saveUsersToStorage();
+                }
+            }
+        }
+        
+        // Удаление урока
+        function deleteLesson(lessonId, level) {
+            if (confirm('Вы уверены, что хотите удалить этот урок?')) {
+                state.lessons[level] = state.lessons[level].filter(lesson => lesson.id !== lessonId);
+                saveLessonsToStorage();
+                
+                if (state.uploadedVideos[lessonId]) {
+                    delete state.uploadedVideos[lessonId];
+                    saveUploadedVideosToStorage();
+                }
+                
+                alert('Урок удален');
+                
+                // Перезагружаем модальное окно если оно открыто
+                if (isModalOpen) {
+                    const modal = document.getElementById(`${level}-lesson-modal`);
+                    if (modal.classList.contains('active')) {
+                        const content = document.getElementById(`${level}-lesson-content`);
+                        content.innerHTML = '';
+                        loadLessonsWithDelay(level, content);
+                    }
+                }
+            }
+        }
+        
+        // Функции редактирования уроков
+        function openEditLessonsModal(level) {
+            if (!state.isAdmin) {
+                alert('У вас нет прав для редактирования уроков');
+                return;
+            }
+            
+            editLessonsTitle.textContent = `Редактирование уроков ${level === 'beginner' ? 'начального' : 'продвинутого'} уровня`;
+            editLessonsContent.innerHTML = '';
+            
+            const lessons = state.lessons[level];
+            
+            lessons.forEach((lesson, index) => {
+                const lessonEditor = createLessonEditor(lesson, index + 1, level);
+                editLessonsContent.appendChild(lessonEditor);
+            });
+            
+            editLessonsContent.dataset.level = level;
+            editLessonsModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function createLessonEditor(lesson, number, level) {
+            const editor = document.createElement('div');
+            editor.className = 'lesson-step';
+            editor.id = `edit-${lesson.id}`;
+            
+            // Заголовок
+            const titleInput = document.createElement('input');
+            titleInput.type = 'text';
+            titleInput.value = lesson.title;
+            titleInput.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 10px; font-size: 1.1rem; font-weight: bold;';
+            
+            // Иконка
+            const iconLabel = document.createElement('label');
+            iconLabel.textContent = 'Иконка: ';
+            
+            const iconSelect = document.createElement('select');
+            iconSelect.style.padding = '8px';
+            
+            const icons = [
+                'fa-power-off', 'fa-volume-up', 'fa-home', 'fa-download', 'fa-wifi',
+                'fa-address-book', 'fa-shield-alt', 'fa-cloud', 'fa-lock', 'fa-photo-video',
+                'fa-microphone', 'fa-envelope', 'fa-credit-card', 'fa-save', 'fa-mobile-alt'
+            ];
+            
+            icons.forEach(icon => {
+                const option = document.createElement('option');
+                option.value = icon;
+                option.textContent = icon.replace('fa-', '');
+                if (icon === lesson.icon) option.selected = true;
+                iconSelect.appendChild(option);
+            });
+            
+            // Содержание
+            const contentLabel = document.createElement('label');
+            contentLabel.textContent = 'Содержание урока:';
+            contentLabel.style.cssText = 'display: block; margin-top: 10px; margin-bottom: 5px;';
+            
+            const contentTextarea = document.createElement('textarea');
+            contentTextarea.value = lesson.content;
+            contentTextarea.style.cssText = 'width: 100%; height: 120px; padding: 12px; margin-bottom: 10px;';
+            
+            // Видео
+            const videoLabel = document.createElement('label');
+            videoLabel.textContent = 'Код для встраивания видео (iframe):';
+            videoLabel.style.cssText = 'display: block; margin-top: 10px; margin-bottom: 5px;';
+            
+            const videoTextarea = document.createElement('textarea');
+            videoTextarea.value = lesson.videoEmbedCode || '';
+            videoTextarea.style.cssText = 'width: 100%; height: 80px; padding: 12px; margin-bottom: 10px;';
+            videoTextarea.placeholder = 'Вставьте iframe-код для встраивания видео';
+            
+            // Удаление
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger';
+            deleteBtn.textContent = 'Удалить урок';
+            deleteBtn.style.marginTop = '10px';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm(`Вы уверены, что хотите удалить урок "${lesson.title}"?`)) {
+                    deleteLesson(lesson.id, level);
+                    editor.remove();
+                }
+            });
+            
+            // Сборка редактора
+            const titleRow = document.createElement('div');
+            titleRow.style.cssText = 'display: flex; align-items: center; margin-bottom: 15px;';
+            
+            const lessonNumber = document.createElement('span');
+            lessonNumber.textContent = `${number}.`;
+            lessonNumber.style.cssText = 'margin-right: 10px; font-weight: bold; font-size: 1.1rem;';
+            
+            titleRow.appendChild(lessonNumber);
+            titleRow.appendChild(titleInput);
+            
+            const iconRow = document.createElement('div');
+            iconRow.style.cssText = 'display: flex; align-items: center; margin-bottom: 15px;';
+            iconRow.appendChild(iconLabel);
+            iconRow.appendChild(iconSelect);
+            
+            editor.appendChild(titleRow);
+            editor.appendChild(iconRow);
+            editor.appendChild(contentLabel);
+            editor.appendChild(contentTextarea);
+            editor.appendChild(videoLabel);
+            editor.appendChild(videoTextarea);
+            editor.appendChild(deleteBtn);
+            
+            // Сохранение ссылок
+            editor.dataset.lessonId = lesson.id;
+            editor.titleInput = titleInput;
+            editor.iconSelect = iconSelect;
+            editor.contentTextarea = contentTextarea;
+            editor.videoTextarea = videoTextarea;
+            
+            return editor;
+        }
+        
+        function saveLessons() {
+            const level = editLessonsContent.dataset.level;
+            const lessonEditors = editLessonsContent.querySelectorAll('.lesson-step');
+            const updatedLessons = [];
+            
+            lessonEditors.forEach((editor, index) => {
+                const lessonId = editor.dataset.lessonId;
+                const existingLesson = state.lessons[level].find(l => l.id === lessonId) || {
+                    id: lessonId || `${level}-${Date.now()}`,
+                    videoType: 'none',
+                    hasCustomVideo: false,
+                    videoUrl: ''
+                };
+                
+                const hasVideo = editor.videoTextarea.value.trim() !== '';
+                
+                updatedLessons.push({
+                    ...existingLesson,
+                    title: editor.titleInput.value,
+                    icon: editor.iconSelect.value,
+                    content: editor.contentTextarea.value,
+                    videoUrl: hasVideo ? 'https://rutube.ru/video/c515f1b6cad7ac22fdbaf9afc5d57b6b/' : '',
+                    videoType: hasVideo ? 'rutube' : 'none',
+                    hasCustomVideo: hasVideo,
+                    videoEmbedCode: hasVideo ? editor.videoTextarea.value : ''
+                });
+            });
+            
+            state.lessons[level] = updatedLessons;
+            saveLessonsToStorage();
+            
+            editLessonsModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            alert('Изменения сохранены успешно!');
+        }
+        
+        function addNewLesson() {
+            const level = editLessonsContent.dataset.level;
+            const newLesson = {
+                id: `${level}-new-${Date.now()}`,
+                title: 'Новый урок',
+                icon: 'fa-mobile-alt',
+                content: 'Содержание нового урока',
+                videoUrl: '',
+                videoType: 'none',
+                hasCustomVideo: false,
+                videoEmbedCode: ''
+            };
+            
+            const lessonEditor = createLessonEditor(newLesson, state.lessons[level].length + 1, level);
+            editLessonsContent.appendChild(lessonEditor);
+            lessonEditor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Функции тестов
+        function openTest1Modal() {
+            if (!state.isAuthenticated) {
+                alert('Для прохождения теста необходимо войти в систему');
+                return;
+            }
+            
+            if (!state.beginnerLessonCompleted) {
+                alert('Для прохождения теста необходимо сначала ознакомиться с уроками начального уровня');
+                return;
+            }
+            
+            openTestModal('test1');
+        }
+        
+        function openTest2Modal() {
+            if (!state.isAuthenticated) {
+                alert('Для прохождения теста необходимо войти в систему');
+                return;
+            }
+            
+            if (!state.advancedLessonCompleted) {
+                alert('Для прохождения теста необходимо сначала ознакомиться с уроками продвинутого уровня');
+                return;
+            }
+            
+            openTestModal('test2');
+        }
+        
+        function openTestModal(testType) {
+            const modal = document.getElementById(`${testType}-modal`);
+            const content = document.getElementById(`${testType}-content`);
+            
+            content.innerHTML = `
+                <h2>Тест ${testType === 'test1' ? 'начального' : 'продвинутого'} уровня</h2>
+                <p>Ответьте на все вопросы правильно, чтобы получить грамоту.</p>
+            `;
+            
+            const test = state.tests[testType];
+            
+            test.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'test-question';
+                
+                const questionTitle = document.createElement('h3');
+                questionTitle.textContent = `${index + 1}. ${question.question}`;
+                
+                questionDiv.appendChild(questionTitle);
+                
+                question.options.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'test-option';
+                    optionDiv.dataset.question = question.id;
+                    optionDiv.dataset.option = option.id;
+                    optionDiv.setAttribute('role', 'button');
+                    optionDiv.setAttribute('tabindex', '0');
+                    
+                    const optionLetter = document.createElement('div');
+                    optionLetter.className = 'option-letter';
+                    optionLetter.textContent = option.id;
+                    
+                    const optionText = document.createElement('div');
+                    optionText.className = 'option-text';
+                    optionText.textContent = option.text;
+                    
+                    optionDiv.appendChild(optionLetter);
+                    optionDiv.appendChild(optionText);
+                    
+                    optionDiv.addEventListener('click', () => selectTestOption(optionDiv, testType));
+                    if (isTouchDevice) {
+                        optionDiv.addEventListener('touchend', (e) => {
+                            e.preventDefault();
+                            selectTestOption(optionDiv, testType);
+                        });
+                    }
+                    
+                    questionDiv.appendChild(optionDiv);
+                });
+                
+                content.appendChild(questionDiv);
+            });
+            
+            const testActions = document.createElement('div');
+            testActions.className = 'test-actions';
+            testActions.innerHTML = `
+                <button class="btn" id="submit-${testType}-btn">Завершить тест</button>
+                <button class="btn btn-secondary" id="cancel-${testType}-btn">Отмена</button>
+            `;
+            
+            content.appendChild(testActions);
+            
+            document.getElementById(`submit-${testType}-btn`).addEventListener('click', () => submitTest(testType));
+            document.getElementById(`cancel-${testType}-btn`).addEventListener('click', () => closeTestModalFunc(testType));
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            resetTest(testType);
+        }
+        
+        function selectTestOption(optionElement, testType) {
+            const question = optionElement.dataset.question;
+            const option = optionElement.dataset.option;
+            
+            const questionOptions = document.querySelectorAll(`#${testType}-content .test-option[data-question="${question}"]`);
+            questionOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.setAttribute('aria-selected', 'false');
+            });
+            
+            optionElement.classList.add('selected');
+            optionElement.setAttribute('aria-selected', 'true');
+            
+            if (testType === 'test1') {
+                state.test1Answers[question] = option;
+            } else {
+                state.test2Answers[question] = option;
+            }
+        }
+        
+        function resetTest(testType) {
+            if (testType === 'test1') {
+                state.test1Answers = {};
+            } else {
+                state.test2Answers = {};
+            }
+        }
+        
+        function submitTest(testType) {
+            const test = state.tests[testType];
+            const answers = testType === 'test1' ? state.test1Answers : state.test2Answers;
+            
+            const unanswered = test.some(question => !answers[question.id]);
+            if (unanswered) {
+                alert('Пожалуйста, ответьте на все вопросы перед завершением теста');
+                return;
+            }
+            
+            let correctCount = 0;
+            test.forEach(question => {
+                const userAnswer = answers[question.id];
+                const correctOption = question.options.find(opt => opt.correct);
+                if (userAnswer === correctOption.id) {
+                    correctCount++;
+                }
+            });
+            
+            const resultDiv = document.getElementById(`${testType}-result`);
+            const contentDiv = document.getElementById(`${testType}-content`);
+            const resultIcon = document.getElementById(`${testType}-result-icon`);
+            const resultTitle = document.getElementById(`${testType}-result-title`);
+            const resultText = document.getElementById(`${testType}-result-text`);
+            const resultMessage = document.getElementById(`${testType}-result-message`);
+            const correctAnswersSpan = document.getElementById(`${testType}-correct-answers`);
+            
+            contentDiv.style.display = 'none';
+            resultDiv.classList.remove('hidden');
+            
+            correctAnswersSpan.textContent = correctCount;
+            
+            const totalQuestions = test.length;
+            const isPerfectScore = correctCount === totalQuestions;
+            
+            if (isPerfectScore) {
+                resultIcon.className = 'result-icon result-success';
+                resultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
+                resultTitle.textContent = 'Тест пройден успешно!';
+                resultText.textContent = `Вы правильно ответили на все ${test.length} вопросов!`;
+                resultMessage.textContent = testType === 'test1' 
+                    ? 'Поздравляем! Вы успешно освоили базовый уровень!'
+                    : 'Поздравляем! Вы успешно освоили повышенный уровень!';
+                
+                document.getElementById(`view-${testType === 'test1' ? 'beginner' : 'advanced'}-certificate-btn`).style.display = 'block';
+                document.getElementById(`retry-${testType}-btn`).style.display = 'none';
+                
+                if (testType === 'test1') {
+                    state.beginnerTestPassed = true;
+                } else {
+                    state.advancedTestPassed = true;
+                }
+                
+                saveUserProgress();
+                updateUI();
+            } else {
+                resultIcon.className = 'result-icon result-fail';
+                resultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                resultTitle.textContent = 'Тест не пройден';
+                resultText.textContent = `Вы правильно ответили на ${correctCount} из ${test.length} вопросов.`;
+                resultMessage.textContent = `Для получения грамоты необходимо ответить правильно на все вопросы (${totalQuestions}/${totalQuestions}). Попробуйте еще раз!`;
+                
+                document.getElementById(`view-${testType === 'test1' ? 'beginner' : 'advanced'}-certificate-btn`).style.display = 'none';
+                document.getElementById(`retry-${testType}-btn`).style.display = 'block';
+                
+                if (testType === 'test1') {
+                    state.beginnerTestPassed = false;
+                } else {
+                    state.advancedTestPassed = false;
+                }
+                
+                saveUserProgress();
+                updateUI();
+            }
+        }
+        
+        function closeTestModalFunc(testType) {
+            const modal = document.getElementById(`${testType}-modal`);
+            const content = document.getElementById(`${testType}-content`);
+            const result = document.getElementById(`${testType}-result`);
+            
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            content.style.display = 'block';
+            result.classList.add('hidden');
+        }
+        
+        // Функции редактирования тестов
+        function openEditTestModal(testType) {
+            if (!state.isAdmin) {
+                alert('У вас нет прав для редактирования тестов');
+                return;
+            }
+            
+            const testName = testType === 'test1' ? 'начального уровня' : 'продвинутого уровня';
+            editTestTitle.textContent = `Редактирование теста ${testName}`;
+            editTestContent.innerHTML = '';
+            
+            const test = state.tests[testType];
+            
+            test.forEach((question, index) => {
+                const questionEditor = createQuestionEditor(question, index + 1, testType);
+                editTestContent.appendChild(questionEditor);
+            });
+            
+            editTestContent.dataset.testType = testType;
+            editTestModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function createQuestionEditor(question, number, testType) {
+            const editor = document.createElement('div');
+            editor.className = 'test-question';
+            editor.id = `edit-${testType}-question-${question.id}`;
+            
+            const questionLabel = document.createElement('label');
+            questionLabel.textContent = `Вопрос ${number}:`;
+            questionLabel.style.cssText = 'display: block; margin-bottom: 5px; font-weight: bold;';
+            
+            const questionInput = document.createElement('input');
+            questionInput.type = 'text';
+            questionInput.value = question.question;
+            questionInput.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 15px;';
+            
+            editor.appendChild(questionLabel);
+            editor.appendChild(questionInput);
+            
+            const optionsLabel = document.createElement('label');
+            optionsLabel.textContent = 'Варианты ответов:';
+            optionsLabel.style.cssText = 'display: block; margin-bottom: 10px;';
+            editor.appendChild(optionsLabel);
+            
+            question.options.forEach((option, optIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.style.cssText = 'display: flex; align-items: center; margin-bottom: 10px; flex-wrap: wrap;';
+                
+                const optionLetter = document.createElement('div');
+                optionLetter.className = 'option-letter';
+                optionLetter.textContent = option.id;
+                optionLetter.style.cssText = 'margin-right: 10px; flex-shrink: 0;';
+                
+                const optionInput = document.createElement('input');
+                optionInput.type = 'text';
+                optionInput.value = option.text;
+                optionInput.style.cssText = 'flex-grow: 1; padding: 10px; margin-right: 10px; min-width: 200px;';
+                
+                const correctCheckbox = document.createElement('input');
+                correctCheckbox.type = 'radio';
+                correctCheckbox.name = `correct-${question.id}`;
+                correctCheckbox.checked = option.correct;
+                correctCheckbox.style.marginRight = '5px';
+                
+                const correctLabel = document.createElement('label');
+                correctLabel.textContent = 'Правильный ответ';
+                correctLabel.style.cssText = 'font-size: 0.9rem; margin-right: 10px;';
+                
+                optionDiv.appendChild(optionLetter);
+                optionDiv.appendChild(optionInput);
+                optionDiv.appendChild(correctCheckbox);
+                optionDiv.appendChild(correctLabel);
+                editor.appendChild(optionDiv);
+                
+                optionDiv.optionInput = optionInput;
+                optionDiv.correctCheckbox = correctCheckbox;
+            });
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger';
+            deleteBtn.textContent = 'Удалить вопрос';
+            deleteBtn.style.cssText = 'margin-top: 10px; padding: 10px 15px;';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm('Вы уверены, что хотите удалить этот вопрос?')) {
+                    deleteQuestion(question.id, testType);
+                    editor.remove();
+                }
+            });
+            
+            editor.appendChild(deleteBtn);
+            editor.questionInput = questionInput;
+            editor.optionDivs = Array.from(editor.querySelectorAll('div[style*="display: flex"]'));
+            
+            return editor;
+        }
+        
+        function saveTest() {
+            const testType = editTestContent.dataset.testType;
+            const questionEditors = editTestContent.querySelectorAll('.test-question');
+            const updatedTest = [];
+            
+            questionEditors.forEach((editor, index) => {
+                const options = [];
+                editor.optionDivs.forEach((optionDiv, optIndex) => {
+                    const optionId = String.fromCharCode(65 + optIndex);
+                    options.push({
+                        id: optionId,
+                        text: optionDiv.optionInput.value,
+                        correct: optionDiv.correctCheckbox.checked
+                    });
+                });
+                
+                updatedTest.push({
+                    id: index + 1,
+                    question: editor.questionInput.value,
+                    options: options
+                });
+            });
+            
+            state.tests[testType] = updatedTest;
+            saveTestsToStorage();
+            
+            editTestModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            alert('Изменения в тесте сохранены успешно!');
+        }
+        
+        function addNewQuestion() {
+            const testType = editTestContent.dataset.testType;
+            const newQuestion = {
+                id: state.tests[testType].length + 1,
+                question: 'Новый вопрос',
+                options: [
+                    { id: 'A', text: 'Первый вариант ответа', correct: true },
+                    { id: 'B', text: 'Второй вариант ответа', correct: false },
+                    { id: 'C', text: 'Третий вариант ответа', correct: false }
+                ]
+            };
+            
+            const questionEditor = createQuestionEditor(newQuestion, state.tests[testType].length + 1, testType);
+            editTestContent.appendChild(questionEditor);
+            questionEditor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function deleteQuestion(questionId, testType) {
+            if (confirm('Вы уверены, что хотите удалить этот вопрос?')) {
+                state.tests[testType] = state.tests[testType].filter(q => q.id !== questionId);
+                saveTestsToStorage();
+                alert('Вопрос удален');
+            }
+        }
+        
+        // Функции сертификатов
+        function updateCertificateNames() {
+            if (state.currentUser) {
+                const userName = state.currentUser.name;
+                beginnerCertificateUsernameElement.textContent = userName;
+                advancedCertificateUsernameElement.textContent = userName;
+            }
+        }
+        
+        function updateCertificateDate() {
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const dateString = now.toLocaleDateString('ru-RU', options);
+            document.getElementById('beginner-certificate-date').textContent = dateString;
+            document.getElementById('advanced-certificate-date').textContent = dateString;
+        }
+        
+        function viewCertificate(level) {
+            const passed = level === 'beginner' ? state.beginnerTestPassed : state.advancedTestPassed;
+            if (!passed) {
+                alert(`Вы еще не прошли тест успешно. Для получения грамоты необходимо ответить правильно на все вопросы.`);
+                return;
+            }
+            
+            if (level === 'beginner') {
+                closeTestModalFunc('test1');
+            } else {
+                closeTestModalFunc('test2');
+            }
+            
+            document.getElementById(`${level}-certificate-modal`).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function viewCertificateMain(level) {
+            const passed = level === 'beginner' ? state.beginnerTestPassed : state.advancedTestPassed;
+            if (!passed) {
+                alert(`Вы еще не получили грамоту за ${level === 'beginner' ? 'базовый' : 'повышенный'} уровень. Пройдите тест успешно.`);
+                return;
+            }
+            document.getElementById(`${level}-certificate-modal`).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCertificateModal(level) {
+            document.getElementById(`${level}-certificate-modal`).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function printCertificate() {
+            window.print();
+        }
+        
+        // Функции чат-бота
+        function addBotMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message bot-message';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            messageDiv.appendChild(contentDiv);
+            const chatbotBody = document.getElementById('chatbot-messages');
+            chatbotBody.appendChild(messageDiv);
+            chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        }
+        
+        function handleQuestionClick(questionType) {
+            let response = '';
+            switch(questionType) {
+                case 'about': response = 'Этот сайт создан для обучения основам использования смартфона.'; break;
+                case 'beginner': response = 'Начальный уровень включает уроки по основам работы со смартфоном.'; break;
+                case 'advanced': response = 'Для доступа к продвинутому уровню необходимо успешно пройти уроки и тест начального уровня.'; break;
+                case 'test1': response = 'Тест начального уровня состоит из нескольких вопросов.'; break;
+                case 'test2': response = 'Тест продвинутого уровня также состоит из нескольких вопросов.'; break;
+                case 'register': response = 'Для регистрации введите имя и пароль в форме в верхней части сайта.'; break;
+                default: response = 'Выберите вопрос из списка!';
+            }
+            addBotMessage(response);
+        }
+        
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            const clickEvent = isTouchDevice ? 'touchend' : 'click';
+            
+            // Аутентификация
+            loginBtn.addEventListener(clickEvent, login);
+            registerBtn.addEventListener(clickEvent, register);
+            logoutBtn.addEventListener(clickEvent, logout);
+            adminPanelBtn.addEventListener(clickEvent, toggleAdminPanel);
+            
+            // Уроки
+            document.getElementById('beginner-lesson-btn').addEventListener(clickEvent, openBeginnerLessonModal);
+            document.getElementById('close-beginner-lesson-modal').addEventListener(clickEvent, () => closeLessonModal('beginner'));
+            document.getElementById('close-beginner-lesson-btn').addEventListener(clickEvent, () => closeLessonModal('beginner'));
+            
+            document.getElementById('advanced-lesson-btn').addEventListener(clickEvent, openAdvancedLessonModal);
+            document.getElementById('close-advanced-lesson-modal').addEventListener(clickEvent, () => closeLessonModal('advanced'));
+            document.getElementById('close-advanced-lesson-btn').addEventListener(clickEvent, () => closeLessonModal('advanced'));
+            
+            // Тесты
+            document.getElementById('beginner-test-btn').addEventListener(clickEvent, openTest1Modal);
+            document.getElementById('advanced-test-btn').addEventListener(clickEvent, openTest2Modal);
+            
+            // Результаты тестов
+            document.getElementById('close-test1-modal').addEventListener(clickEvent, () => closeTestModalFunc('test1'));
+            document.getElementById('close-test1-result-btn').addEventListener(clickEvent, () => closeTestModalFunc('test1'));
+            document.getElementById('view-beginner-certificate-btn').addEventListener(clickEvent, () => viewCertificate('beginner'));
+            document.getElementById('retry-test1-btn').addEventListener(clickEvent, () => {
+                document.getElementById('test1-content').style.display = 'block';
+                document.getElementById('test1-result').classList.add('hidden');
+                resetTest('test1');
+            });
+            
+            document.getElementById('close-test2-modal').addEventListener(clickEvent, () => closeTestModalFunc('test2'));
+            document.getElementById('close-test2-result-btn').addEventListener(clickEvent, () => closeTestModalFunc('test2'));
+            document.getElementById('view-advanced-certificate-btn').addEventListener(clickEvent, () => viewCertificate('advanced'));
+            document.getElementById('retry-test2-btn').addEventListener(clickEvent, () => {
+                document.getElementById('test2-content').style.display = 'block';
+                document.getElementById('test2-result').classList.add('hidden');
+                resetTest('test2');
+            });
+            
+            // Сертификаты
+            document.getElementById('view-beginner-certificate-main-btn').addEventListener(clickEvent, () => viewCertificateMain('beginner'));
+            document.getElementById('view-advanced-certificate-main-btn').addEventListener(clickEvent, () => viewCertificateMain('advanced'));
+            
+            document.getElementById('close-beginner-certificate-modal').addEventListener(clickEvent, () => closeCertificateModal('beginner'));
+            document.getElementById('close-beginner-certificate-btn').addEventListener(clickEvent, () => closeCertificateModal('beginner'));
+            document.getElementById('print-beginner-certificate-btn').addEventListener(clickEvent, printCertificate);
+            
+            document.getElementById('close-advanced-certificate-modal').addEventListener(clickEvent, () => closeCertificateModal('advanced'));
+            document.getElementById('close-advanced-certificate-btn').addEventListener(clickEvent, () => closeCertificateModal('advanced'));
+            document.getElementById('print-advanced-certificate-btn').addEventListener(clickEvent, printCertificate);
+            
+            // Админская панель
+            editBeginnerLessonsBtn.addEventListener(clickEvent, () => openEditLessonsModal('beginner'));
+            editAdvancedLessonsBtn.addEventListener(clickEvent, () => openEditLessonsModal('advanced'));
+            editTest1Btn.addEventListener(clickEvent, () => openEditTestModal('test1'));
+            editTest2Btn.addEventListener(clickEvent, () => openEditTestModal('test2'));
+            
+            // Редактирование уроков
+            closeEditLessonsModal.addEventListener(clickEvent, () => {
+                editLessonsModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            cancelEditLessonsBtn.addEventListener(clickEvent, () => {
+                editLessonsModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            saveLessonsBtn.addEventListener(clickEvent, saveLessons);
+            addNewLessonBtn.addEventListener(clickEvent, addNewLesson);
+            
+            // Редактирование тестов
+            closeEditTestModal.addEventListener(clickEvent, () => {
+                editTestModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            cancelEditTestBtn.addEventListener(clickEvent, () => {
+                editTestModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            saveTestBtn.addEventListener(clickEvent, saveTest);
+            addNewQuestionBtn.addEventListener(clickEvent, addNewQuestion);
+            
+            // Чат-бот
+            document.querySelectorAll('.question-btn').forEach(btn => {
+                btn.addEventListener(clickEvent, (e) => {
+                    if (isTouchDevice) e.preventDefault();
+                    handleQuestionClick(btn.dataset.question);
+                });
+            });
+            
+            // Ввод с клавиатуры
+            loginNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') login();
+            });
+            loginPasswordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') login();
+            });
+            
+            // Закрытие модальных окон по клику вне области
+            document.querySelectorAll('.lesson-modal, .modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                        isModalOpen = false;
+                    }
+                });
+            });
+            
+            // Предотвращение масштабирования на мобильных
+            if (isTouchDevice) {
+                document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
+                document.addEventListener('touchstart', (e) => {
+                    if (e.touches.length > 1) e.preventDefault();
+                }, { passive: false });
+            }
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Очистка при разгрузке страницы
+        window.addEventListener('beforeunload', () => {
+            if (isModalOpen) {
+                modalVideoIframes.forEach(iframe => {
+                    if (iframe.parentNode) {
+                        iframe.src = '';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
