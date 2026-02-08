@@ -1627,6 +1627,11 @@
     </footer>
     
     <script>
+        // Конфигурация API
+        // ВАЖНО: Замените этот URL на URL вашего сервера после деплоя
+        const API_BASE_URL = 'https://your-server.herokuapp.com/api';
+        const LOCAL_STORAGE_KEY = 'smartphone_course_backup';
+        
         // Touch device detection
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
         
@@ -1650,7 +1655,6 @@
                 test1: [],
                 test2: []
             },
-            uploadedVideos: {},
             isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
         };
         
@@ -1698,15 +1702,55 @@
         let isModalOpen = false;
         let modalVideoIframes = [];
         
-        // Initialize the app
-        function initApp() {
-            console.log("Инициализация приложения. Мобильное устройство:", state.isMobile);
+        // API functions
+        async function apiRequest(endpoint, method = 'GET', data = null, requireAuth = false) {
+            const url = `${API_BASE_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+            };
             
-            // Загрузка всех данных
-            loadAllData();
+            if (requireAuth) {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    throw new Error('Требуется авторизация');
+                }
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            const options = {
+                method,
+                headers,
+                mode: 'cors'
+            };
+            
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+            
+            try {
+                const response = await fetch(url, options);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `Ошибка HTTP: ${response.status}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API request error:', error);
+                throw error;
+            }
+        }
+        
+        // Initialize the app
+        async function initApp() {
+            console.log("Инициализация приложения с серверной синхронизацией");
             
             // Проверка аутентификации
-            checkAuthentication();
+            await checkAuthentication();
+            
+            // Загрузка данных с сервера
+            await loadAllData();
             
             // Установка обработчиков событий
             setupEventListeners();
@@ -1714,76 +1758,210 @@
             // Установка даты в сертификатах
             updateCertificateDate();
             
-            // Проверка и обновление данных администратора
-            ensureAdminUser();
-            
-            console.log("Приложение инициализировано");
+            console.log("Приложение инициализировано с серверной синхронизацией");
         }
         
-        // Загрузка всех данных из localStorage
-        function loadAllData() {
+        // Загрузка всех данных с сервера
+        async function loadAllData() {
             try {
-                // Пользователи
-                const savedUsers = localStorage.getItem('smartphoneUsers');
-                state.users = savedUsers ? JSON.parse(savedUsers) : [];
+                // Загружаем уроки
+                const beginnerLessons = await apiRequest('/lessons/beginner');
+                const advancedLessons = await apiRequest('/lessons/advanced');
                 
-                // Уроки
-                const savedLessons = localStorage.getItem('smartphoneLessons');
-                if (savedLessons) {
-                    const lessons = JSON.parse(savedLessons);
-                    state.lessons.beginner = lessons.beginner || [];
-                    state.lessons.advanced = lessons.advanced || [];
+                if (beginnerLessons.lessons && beginnerLessons.lessons.length > 0) {
+                    state.lessons.beginner = beginnerLessons.lessons.map(lesson => ({
+                        id: lesson._id,
+                        title: lesson.title,
+                        icon: lesson.icon,
+                        content: lesson.content,
+                        videoUrl: '',
+                        videoType: 'none',
+                        hasCustomVideo: lesson.hasCustomVideo,
+                        videoEmbedCode: lesson.videoEmbedCode || ''
+                    }));
                 }
                 
-                // Тесты
-                const savedTests = localStorage.getItem('smartphoneTests');
-                if (savedTests) {
-                    const tests = JSON.parse(savedTests);
-                    state.tests.test1 = tests.test1 || [];
-                    state.tests.test2 = tests.test2 || [];
+                if (advancedLessons.lessons && advancedLessons.lessons.length > 0) {
+                    state.lessons.advanced = advancedLessons.lessons.map(lesson => ({
+                        id: lesson._id,
+                        title: lesson.title,
+                        icon: lesson.icon,
+                        content: lesson.content,
+                        videoUrl: '',
+                        videoType: 'none',
+                        hasCustomVideo: lesson.hasCustomVideo,
+                        videoEmbedCode: lesson.videoEmbedCode || ''
+                    }));
                 }
                 
-                // Видео
-                const savedVideos = localStorage.getItem('smartphoneVideos');
-                if (savedVideos) {
-                    state.uploadedVideos = JSON.parse(savedVideos);
+                // Загружаем тесты
+                const beginnerTest = await apiRequest('/tests/beginner');
+                const advancedTest = await apiRequest('/tests/advanced');
+                
+                if (beginnerTest.test && beginnerTest.test.questions) {
+                    state.tests.test1 = beginnerTest.test.questions.map((q, index) => ({
+                        id: index + 1,
+                        question: q.question,
+                        options: q.options.map((opt, optIndex) => ({
+                            id: String.fromCharCode(65 + optIndex),
+                            text: opt.text,
+                            correct: opt.correct
+                        }))
+                    }));
                 }
                 
-                // Загрузка дефолтных данных если пусто
+                if (advancedTest.test && advancedTest.test.questions) {
+                    state.tests.test2 = advancedTest.test.questions.map((q, index) => ({
+                        id: index + 1,
+                        question: q.question,
+                        options: q.options.map((opt, optIndex) => ({
+                            id: String.fromCharCode(65 + optIndex),
+                            text: opt.text,
+                            correct: opt.correct
+                        }))
+                    }));
+                }
+                
+                // Если данных нет на сервере, создаем дефолтные
                 if (state.lessons.beginner.length === 0) {
+                    console.log('Данных нет на сервере, загружаем дефолтные');
                     loadDefaultLessons();
-                }
-                if (state.tests.test1.length === 0) {
                     loadDefaultTests();
+                    
+                    // Пытаемся сохранить дефолтные данные на сервер если админ
+                    if (state.isAdmin) {
+                        await saveDefaultDataToServer();
+                    }
                 }
+                
+                // Сохраняем резервную копию в localStorage
+                saveBackupToLocalStorage();
                 
             } catch (error) {
-                console.error("Ошибка загрузки данных:", error);
-                // Сброс данных при ошибке парсинга
-                state.users = [];
-                state.lessons = { beginner: [], advanced: [] };
-                state.tests = { test1: [], test2: [] };
-                state.uploadedVideos = {};
-                loadDefaultLessons();
-                loadDefaultTests();
+                console.error('Ошибка загрузки данных с сервера:', error);
+                
+                // Если сервер недоступен, загружаем из localStorage
+                loadFromLocalStorageBackup();
+                
+                // Проверяем, есть ли дефолтные данные
+                if (state.lessons.beginner.length === 0) {
+                    loadDefaultLessons();
+                    loadDefaultTests();
+                }
+            }
+        }
+        
+        // Сохранение дефолтных данных на сервер (только для админов)
+        async function saveDefaultDataToServer() {
+            if (!state.isAdmin) return;
+            
+            try {
+                console.log('Сохранение дефолтных данных на сервер...');
+                
+                // Сохраняем уроки
+                const beginnerLessonsForServer = state.lessons.beginner.map((lesson, index) => ({
+                    title: lesson.title,
+                    content: lesson.content,
+                    icon: lesson.icon,
+                    order: index,
+                    hasCustomVideo: lesson.hasCustomVideo,
+                    videoEmbedCode: lesson.videoEmbedCode
+                }));
+                
+                const advancedLessonsForServer = state.lessons.advanced.map((lesson, index) => ({
+                    title: lesson.title,
+                    content: lesson.content,
+                    icon: lesson.icon,
+                    order: index,
+                    hasCustomVideo: lesson.hasCustomVideo,
+                    videoEmbedCode: lesson.videoEmbedCode
+                }));
+                
+                await apiRequest('/lessons/beginner', 'PUT', { lessons: beginnerLessonsForServer }, true);
+                await apiRequest('/lessons/advanced', 'PUT', { lessons: advancedLessonsForServer }, true);
+                
+                // Сохраняем тесты
+                const beginnerTestForServer = {
+                    questions: state.tests.test1.map(q => ({
+                        question: q.question,
+                        options: q.options.map(opt => ({
+                            id: opt.id,
+                            text: opt.text,
+                            correct: opt.correct
+                        }))
+                    }))
+                };
+                
+                const advancedTestForServer = {
+                    questions: state.tests.test2.map(q => ({
+                        question: q.question,
+                        options: q.options.map(opt => ({
+                            id: opt.id,
+                            text: opt.text,
+                            correct: opt.correct
+                        }))
+                    }))
+                };
+                
+                await apiRequest('/tests/beginner', 'PUT', beginnerTestForServer, true);
+                await apiRequest('/tests/advanced', 'PUT', advancedTestForServer, true);
+                
+                console.log('Дефолтные данные успешно сохранены на сервер');
+                
+            } catch (error) {
+                console.error('Ошибка сохранения дефолтных данных на сервер:', error);
+            }
+        }
+        
+        // Загрузка из localStorage (резервный вариант)
+        function loadFromLocalStorageBackup() {
+            try {
+                const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    
+                    if (data.lessons) state.lessons = data.lessons;
+                    if (data.tests) state.tests = data.tests;
+                    
+                    console.log('Данные загружены из резервной копии localStorage');
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки из localStorage:', error);
+            }
+        }
+        
+        // Сохранение резервной копии в localStorage
+        function saveBackupToLocalStorage() {
+            try {
+                const dataToSave = {
+                    lessons: state.lessons,
+                    tests: state.tests,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
+            } catch (error) {
+                console.error('Ошибка сохранения в localStorage:', error);
             }
         }
         
         // Проверка аутентификации
-        function checkAuthentication() {
-            const savedUserId = localStorage.getItem('currentUserId');
-            if (savedUserId) {
-                const user = state.users.find(u => u.id === savedUserId);
-                if (user) {
-                    loginUser(user);
-                } else {
+        async function checkAuthentication() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    const response = await apiRequest('/me', 'GET', null, true);
+                    loginUser(response.user, token);
+                } catch (error) {
+                    console.error('Проверка аутентификации не удалась:', error);
+                    localStorage.removeItem('authToken');
                     localStorage.removeItem('currentUserId');
                 }
             }
         }
         
         // Вход пользователя
-        function loginUser(user) {
+        function loginUser(user, token) {
             state.currentUser = user;
             state.isAuthenticated = true;
             state.isAdmin = Boolean(user.isAdmin);
@@ -1792,34 +1970,12 @@
             state.advancedLessonCompleted = Boolean(user.advancedLessonCompleted);
             state.advancedTestPassed = Boolean(user.advancedTestPassed);
             
+            localStorage.setItem('authToken', token);
             localStorage.setItem('currentUserId', user.id);
             
             updateUI();
             updateCertificateNames();
             addBotMessage(`С возвращением, ${user.name}! Рад снова вас видеть.`);
-        }
-        
-        // Проверка и создание администратора
-        function ensureAdminUser() {
-            const adminUser = state.users.find(u => u.name.toLowerCase() === 'айлин');
-            if (!adminUser) {
-                const newAdminUser = {
-                    id: 'admin_user_' + Date.now(),
-                    name: 'Айлин',
-                    password: '5555',
-                    registered: new Date().toISOString(),
-                    isAdmin: true,
-                    isSuperAdmin: true,
-                    beginnerLessonCompleted: true,
-                    beginnerTestPassed: true,
-                    advancedLessonCompleted: true,
-                    advancedTestPassed: true
-                };
-                
-                state.users.push(newAdminUser);
-                saveUsersToStorage();
-                console.log('Создан новый администратор: Айлин');
-            }
         }
         
         // Загрузка дефолтных уроков
@@ -1969,8 +2125,6 @@
                     videoEmbedCode: ''
                 }
             ];
-            
-            saveLessonsToStorage();
         }
         
         // Загрузка дефолтных тестов
@@ -2070,39 +2224,6 @@
                     ]
                 }
             ];
-            
-            saveTestsToStorage();
-        }
-        
-        // Storage functions
-        function saveUsersToStorage() {
-            if (state.currentUser && state.isAuthenticated) {
-                const userIndex = state.users.findIndex(user => user.id === state.currentUser.id);
-                if (userIndex !== -1) {
-                    state.users[userIndex] = { 
-                        ...state.users[userIndex],
-                        beginnerLessonCompleted: state.beginnerLessonCompleted,
-                        beginnerTestPassed: state.beginnerTestPassed,
-                        advancedLessonCompleted: state.advancedLessonCompleted,
-                        advancedTestPassed: state.advancedTestPassed,
-                        isAdmin: state.isAdmin
-                    };
-                    state.currentUser = state.users[userIndex];
-                }
-            }
-            localStorage.setItem('smartphoneUsers', JSON.stringify(state.users));
-        }
-        
-        function saveLessonsToStorage() {
-            localStorage.setItem('smartphoneLessons', JSON.stringify(state.lessons));
-        }
-        
-        function saveTestsToStorage() {
-            localStorage.setItem('smartphoneTests', JSON.stringify(state.tests));
-        }
-        
-        function saveUploadedVideosToStorage() {
-            localStorage.setItem('smartphoneVideos', JSON.stringify(state.uploadedVideos));
         }
         
         // Обновление интерфейса
@@ -2248,7 +2369,7 @@
         }
         
         // Функции аутентификации
-        function login() {
+        async function login() {
             const name = loginNameInput.value.trim();
             const password = loginPasswordInput.value.trim();
             
@@ -2257,18 +2378,19 @@
                 return;
             }
             
-            const user = state.users.find(u => u.name.toLowerCase() === name.toLowerCase());
-            
-            if (user && user.password === password) {
-                loginUser(user);
+            try {
+                const response = await apiRequest('/login', 'POST', { name, password });
+                
+                loginUser(response.user, response.token);
                 loginNameInput.value = '';
                 loginPasswordInput.value = '';
-            } else {
-                alert('Неверное имя пользователя или пароль');
+                
+            } catch (error) {
+                alert(error.message || 'Неверное имя пользователя или пароль');
             }
         }
         
-        function register() {
+        async function register() {
             const name = loginNameInput.value.trim();
             const password = loginPasswordInput.value.trim();
             
@@ -2282,29 +2404,16 @@
                 return;
             }
             
-            if (state.users.find(u => u.name.toLowerCase() === name.toLowerCase())) {
-                alert('Пользователь с таким именем уже существует');
-                return;
+            try {
+                const response = await apiRequest('/register', 'POST', { name, password });
+                
+                loginUser(response.user, response.token);
+                loginNameInput.value = '';
+                loginPasswordInput.value = '';
+                
+            } catch (error) {
+                alert(error.message || 'Ошибка при регистрации');
             }
-            
-            const newUser = {
-                id: 'user_' + Date.now(),
-                name,
-                password,
-                registered: new Date().toISOString(),
-                isAdmin: false,
-                beginnerLessonCompleted: false,
-                beginnerTestPassed: false,
-                advancedLessonCompleted: false,
-                advancedTestPassed: false
-            };
-            
-            state.users.push(newUser);
-            saveUsersToStorage();
-            
-            loginUser(newUser);
-            loginNameInput.value = '';
-            loginPasswordInput.value = '';
         }
         
         function logout() {
@@ -2316,11 +2425,30 @@
             state.advancedLessonCompleted = false;
             state.advancedTestPassed = false;
             
+            localStorage.removeItem('authToken');
             localStorage.removeItem('currentUserId');
             adminPanel.classList.add('hidden');
             
             updateUI();
             addBotMessage('Вы вышли из системы. Для продолжения обучения зарегистрируйтесь или войдите снова.');
+        }
+        
+        // Сохранение прогресса на сервере
+        async function saveUserProgress() {
+            if (!state.isAuthenticated) return;
+            
+            try {
+                await apiRequest('/user/progress', 'PUT', {
+                    beginnerLessonCompleted: state.beginnerLessonCompleted,
+                    beginnerTestPassed: state.beginnerTestPassed,
+                    advancedLessonCompleted: state.advancedLessonCompleted,
+                    advancedTestPassed: state.advancedTestPassed
+                }, true);
+                
+                console.log('Прогресс сохранен на сервер');
+            } catch (error) {
+                console.error('Ошибка сохранения прогресса:', error);
+            }
         }
         
         // Админские функции
@@ -2333,7 +2461,7 @@
             }
         }
         
-        // Функции уроков (оптимизированные для мобильных)
+        // Функции уроков
         function openBeginnerLessonModal() {
             if (!state.isAuthenticated) {
                 alert('Для просмотра уроков необходимо войти в систему');
@@ -2396,7 +2524,7 @@
                 // Используем requestAnimationFrame для плавной загрузки
                 if (index < lessons.length) {
                     requestAnimationFrame(() => {
-                        setTimeout(loadNextLesson, 50); // Маленькая задержка для предотвращения зависаний
+                        setTimeout(loadNextLesson, 50);
                     });
                 } else {
                     loadNextLesson();
@@ -2421,10 +2549,8 @@
                 const videoContainer = document.createElement('div');
                 videoContainer.className = 'lesson-video';
                 
-                // Оптимизация для мобильных устройств
                 let videoHtml = lesson.videoEmbedCode;
                 if (state.isMobile) {
-                    // Упрощаем iframe для мобильных устройств
                     videoHtml = videoHtml.replace('width="720"', 'width="100%"')
                                         .replace('height="405"', 'height="auto"');
                 }
@@ -2436,24 +2562,6 @@
             content.textContent = lesson.content;
             lessonStep.appendChild(content);
             
-            // Админские кнопки
-            if (state.isAdmin) {
-                const adminActions = document.createElement('div');
-                adminActions.className = 'admin-actions';
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Удалить урок';
-                deleteBtn.title = 'Удалить урок';
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteLesson(lesson.id, level);
-                });
-                
-                adminActions.appendChild(deleteBtn);
-                lessonStep.appendChild(adminActions);
-            }
-            
             return lessonStep;
         }
         
@@ -2462,11 +2570,9 @@
             modalVideoIframes = Array.from(iframes);
             
             modalVideoIframes.forEach(iframe => {
-                // Добавляем атрибуты для лучшей производительности на мобильных
                 iframe.setAttribute('loading', 'lazy');
                 iframe.setAttribute('importance', 'low');
                 
-                // Ограничиваем автоматическое воспроизведение на мобильных
                 if (state.isMobile) {
                     iframe.removeAttribute('autoplay');
                     iframe.removeAttribute('allow', 'autoplay');
@@ -2504,50 +2610,6 @@
         function updateLessonProgress(level) {
             const count = state.lessons[level].length;
             document.getElementById(`${level}-lesson-progress`).textContent = `Прогресс: ${count}/${count} уроков просмотрено`;
-        }
-        
-        function saveUserProgress() {
-            if (state.currentUser && state.isAuthenticated) {
-                const userIndex = state.users.findIndex(user => user.id === state.currentUser.id);
-                if (userIndex !== -1) {
-                    state.users[userIndex].beginnerLessonCompleted = state.beginnerLessonCompleted;
-                    state.users[userIndex].beginnerTestPassed = state.beginnerTestPassed;
-                    state.users[userIndex].advancedLessonCompleted = state.advancedLessonCompleted;
-                    state.users[userIndex].advancedTestPassed = state.advancedTestPassed;
-                    
-                    state.currentUser.beginnerLessonCompleted = state.beginnerLessonCompleted;
-                    state.currentUser.beginnerTestPassed = state.beginnerTestPassed;
-                    state.currentUser.advancedLessonCompleted = state.advancedLessonCompleted;
-                    state.currentUser.advancedTestPassed = state.advancedTestPassed;
-                    
-                    saveUsersToStorage();
-                }
-            }
-        }
-        
-        // Удаление урока
-        function deleteLesson(lessonId, level) {
-            if (confirm('Вы уверены, что хотите удалить этот урок?')) {
-                state.lessons[level] = state.lessons[level].filter(lesson => lesson.id !== lessonId);
-                saveLessonsToStorage();
-                
-                if (state.uploadedVideos[lessonId]) {
-                    delete state.uploadedVideos[lessonId];
-                    saveUploadedVideosToStorage();
-                }
-                
-                alert('Урок удален');
-                
-                // Перезагружаем модальное окно если оно открыто
-                if (isModalOpen) {
-                    const modal = document.getElementById(`${level}-lesson-modal`);
-                    if (modal.classList.contains('active')) {
-                        const content = document.getElementById(`${level}-lesson-content`);
-                        content.innerHTML = '';
-                        loadLessonsWithDelay(level, content);
-                    }
-                }
-            }
         }
         
         // Функции редактирования уроков
@@ -2670,24 +2732,41 @@
             return editor;
         }
         
-        function saveLessons() {
+        async function deleteLesson(lessonId, level) {
+            if (confirm('Вы уверены, что хотите удалить этот урок?')) {
+                state.lessons[level] = state.lessons[level].filter(lesson => lesson.id !== lessonId);
+                
+                // Обновляем на сервере
+                await saveLessonsToServer(level);
+                
+                // Сохраняем резервную копию
+                saveBackupToLocalStorage();
+                
+                alert('Урок удален');
+                
+                // Перезагружаем модальное окно если оно открыто
+                if (isModalOpen) {
+                    const modal = document.getElementById(`${level}-lesson-modal`);
+                    if (modal.classList.contains('active')) {
+                        const content = document.getElementById(`${level}-lesson-content`);
+                        content.innerHTML = '';
+                        loadLessonsWithDelay(level, content);
+                    }
+                }
+            }
+        }
+        
+        async function saveLessons() {
             const level = editLessonsContent.dataset.level;
             const lessonEditors = editLessonsContent.querySelectorAll('.lesson-step');
             const updatedLessons = [];
             
             lessonEditors.forEach((editor, index) => {
                 const lessonId = editor.dataset.lessonId;
-                const existingLesson = state.lessons[level].find(l => l.id === lessonId) || {
-                    id: lessonId || `${level}-${Date.now()}`,
-                    videoType: 'none',
-                    hasCustomVideo: false,
-                    videoUrl: ''
-                };
-                
                 const hasVideo = editor.videoTextarea.value.trim() !== '';
                 
                 updatedLessons.push({
-                    ...existingLesson,
+                    id: lessonId,
                     title: editor.titleInput.value,
                     icon: editor.iconSelect.value,
                     content: editor.contentTextarea.value,
@@ -2699,11 +2778,36 @@
             });
             
             state.lessons[level] = updatedLessons;
-            saveLessonsToStorage();
+            
+            // Сохраняем на сервере
+            await saveLessonsToServer(level);
             
             editLessonsModal.classList.remove('active');
             document.body.style.overflow = 'auto';
             alert('Изменения сохранены успешно!');
+        }
+        
+        async function saveLessonsToServer(level) {
+            try {
+                const lessonsForServer = state.lessons[level].map((lesson, index) => ({
+                    title: lesson.title,
+                    content: lesson.content,
+                    icon: lesson.icon,
+                    order: index,
+                    hasCustomVideo: lesson.hasCustomVideo,
+                    videoEmbedCode: lesson.videoEmbedCode
+                }));
+                
+                await apiRequest(`/lessons/${level}`, 'PUT', { lessons: lessonsForServer }, true);
+                
+                // Сохраняем резервную копию
+                saveBackupToLocalStorage();
+                
+                console.log(`Уроки ${level} сохранены на сервере`);
+            } catch (error) {
+                console.error(`Ошибка сохранения уроков ${level}:`, error);
+                throw error;
+            }
         }
         
         function addNewLesson() {
@@ -2958,7 +3062,7 @@
             
             editTestContent.dataset.testType = testType;
             editTestModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden');
         }
         
         function createQuestionEditor(question, number, testType) {
@@ -3036,10 +3140,11 @@
             return editor;
         }
         
-        function saveTest() {
+        async function saveTest() {
             const testType = editTestContent.dataset.testType;
+            const level = testType === 'test1' ? 'beginner' : 'advanced';
             const questionEditors = editTestContent.querySelectorAll('.test-question');
-            const updatedTest = [];
+            const questions = [];
             
             questionEditors.forEach((editor, index) => {
                 const options = [];
@@ -3052,19 +3157,38 @@
                     });
                 });
                 
-                updatedTest.push({
-                    id: index + 1,
+                questions.push({
                     question: editor.questionInput.value,
                     options: options
                 });
             });
             
-            state.tests[testType] = updatedTest;
-            saveTestsToStorage();
+            state.tests[testType] = questions.map((q, index) => ({
+                id: index + 1,
+                question: q.question,
+                options: q.options
+            }));
+            
+            // Сохраняем на сервере
+            await saveTestToServer(level, questions);
             
             editTestModal.classList.remove('active');
             document.body.style.overflow = 'auto';
             alert('Изменения в тесте сохранены успешно!');
+        }
+        
+        async function saveTestToServer(level, questions) {
+            try {
+                await apiRequest(`/tests/${level}`, 'PUT', { questions }, true);
+                
+                // Сохраняем резервную копию
+                saveBackupToLocalStorage();
+                
+                console.log(`Тест ${level} сохранен на сервере`);
+            } catch (error) {
+                console.error(`Ошибка сохранения теста ${level}:`, error);
+                throw error;
+            }
         }
         
         function addNewQuestion() {
@@ -3084,10 +3208,19 @@
             questionEditor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         
-        function deleteQuestion(questionId, testType) {
+        async function deleteQuestion(questionId, testType) {
             if (confirm('Вы уверены, что хотите удалить этот вопрос?')) {
                 state.tests[testType] = state.tests[testType].filter(q => q.id !== questionId);
-                saveTestsToStorage();
+                
+                // Обновляем на сервере
+                const level = testType === 'test1' ? 'beginner' : 'advanced';
+                const questions = state.tests[testType].map(q => ({
+                    question: q.question,
+                    options: q.options
+                }));
+                
+                await saveTestToServer(level, questions);
+                
                 alert('Вопрос удален');
             }
         }
